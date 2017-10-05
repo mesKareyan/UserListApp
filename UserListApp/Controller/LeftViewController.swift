@@ -28,7 +28,6 @@ class LeftViewController: UITableViewController {
         guard !leftborderAdded else {
             return
         }
-        profileImageView.tintColor = .white
         profileImageView.layer.cornerRadius = profileImageView.bounds.width / 2.0
         profileImageView.layer.borderWidth = 3.0
         profileImageView.layer.borderColor = UIColor.white.cgColor
