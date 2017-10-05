@@ -18,6 +18,8 @@
 		B27F7FEE1F86105100F76E9D /* UserListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B27F7FED1F86105100F76E9D /* UserListViewController.swift */; };
 		B27F7FF11F8619A700F76E9D /* UserTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B27F7FF01F8619A700F76E9D /* UserTableViewCell.swift */; };
 		B2BDA0A71F862B4100E1B628 /* ProfileEditingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2BDA0A61F862B4100E1B628 /* ProfileEditingViewController.swift */; };
+		B2BDA0AA1F864A6D00E1B628 /* LoginVC+Firebase.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2BDA0A91F864A6D00E1B628 /* LoginVC+Firebase.swift */; };
+		B2BDA0AB1F864E2B00E1B628 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = B2BDA0A81F8644FC00E1B628 /* GoogleService-Info.plist */; };
 		B2E39A791F8601CA00A0D691 /* LeftViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2E39A781F8601CA00A0D691 /* LeftViewController.swift */; };
 		B2E39A7C1F86020800A0D691 /* Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2E39A7B1F86020800A0D691 /* Helpers.swift */; };
 /* End PBXBuildFile section */
@@ -38,6 +40,8 @@
 		B27F7FED1F86105100F76E9D /* UserListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserListViewController.swift; sourceTree = "<group>"; };
 		B27F7FF01F8619A700F76E9D /* UserTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserTableViewCell.swift; sourceTree = "<group>"; };
 		B2BDA0A61F862B4100E1B628 /* ProfileEditingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileEditingViewController.swift; sourceTree = "<group>"; };
+		B2BDA0A81F8644FC00E1B628 /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		B2BDA0A91F864A6D00E1B628 /* LoginVC+Firebase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "LoginVC+Firebase.swift"; sourceTree = "<group>"; };
 		B2E39A781F8601CA00A0D691 /* LeftViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LeftViewController.swift; sourceTree = "<group>"; };
 		B2E39A7B1F86020800A0D691 /* Helpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Helpers.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -101,6 +105,7 @@
 				B21F23AB1F856968006CC65A /* Assets.xcassets */,
 				B21F23AD1F856968006CC65A /* LaunchScreen.storyboard */,
 				B21F23B01F856968006CC65A /* Info.plist */,
+				B2BDA0A81F8644FC00E1B628 /* GoogleService-Info.plist */,
 			);
 			path = UserListApp;
 			sourceTree = "<group>";
@@ -126,6 +131,7 @@
 			isa = PBXGroup;
 			children = (
 				B21F23A61F856968006CC65A /* LoginViewController.swift */,
+				B2BDA0A91F864A6D00E1B628 /* LoginVC+Firebase.swift */,
 				B2E39A781F8601CA00A0D691 /* LeftViewController.swift */,
 				B27F7FED1F86105100F76E9D /* UserListViewController.swift */,
 				B2BDA0A61F862B4100E1B628 /* ProfileEditingViewController.swift */,
@@ -208,6 +214,7 @@
 				B21F23AC1F856968006CC65A /* Assets.xcassets in Resources */,
 				B21F23AA1F856968006CC65A /* Main.storyboard in Resources */,
 				B21F23BA1F856BE0006CC65A /* orangeButton.png in Resources */,
+				B2BDA0AB1F864E2B00E1B628 /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -254,15 +261,23 @@
 			);
 			inputPaths = (
 				"${SRCROOT}/Pods/Target Support Files/Pods-UserListApp/Pods-UserListApp-frameworks.sh",
+				"${BUILT_PRODUCTS_DIR}/APESuperHUD/APESuperHUD.framework",
 				"${BUILT_PRODUCTS_DIR}/Bolts/Bolts.framework",
 				"${BUILT_PRODUCTS_DIR}/FBSDKCoreKit/FBSDKCoreKit.framework",
 				"${BUILT_PRODUCTS_DIR}/FBSDKLoginKit/FBSDKLoginKit.framework",
+				"${BUILT_PRODUCTS_DIR}/GTMSessionFetcher/GTMSessionFetcher.framework",
+				"${BUILT_PRODUCTS_DIR}/GoogleToolboxForMac/GoogleToolboxForMac.framework",
+				"${BUILT_PRODUCTS_DIR}/nanopb/nanopb.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/APESuperHUD.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Bolts.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FBSDKCoreKit.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FBSDKLoginKit.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GTMSessionFetcher.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GoogleToolboxForMac.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/nanopb.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -283,6 +298,7 @@
 				B27F7FF11F8619A700F76E9D /* UserTableViewCell.swift in Sources */,
 				B2E39A7C1F86020800A0D691 /* Helpers.swift in Sources */,
 				B2BDA0A71F862B4100E1B628 /* ProfileEditingViewController.swift in Sources */,
+				B2BDA0AA1F864A6D00E1B628 /* LoginVC+Firebase.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

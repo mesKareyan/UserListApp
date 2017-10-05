@@ -8,8 +8,23 @@
 
 import UIKit
 import FBSDKLoginKit
+import APESuperHUD
 
 class LoginViewController: UIViewController {
+    
+    @IBOutlet weak var textFieldsBottomConstraint: NSLayoutConstraint!
+    @IBOutlet weak var loginLabel: UILabel!
+    @IBOutlet weak var loginStackView: UIStackView!
+    @IBOutlet weak var loginButton: UIButton!
+    @IBOutlet weak var facebookLoginButtonContriner: UIView!
+    @IBOutlet weak var usernameTextField: UITextField!
+    @IBOutlet weak var passwordTextField: UITextField!
+    var fbLoginButton: FBSDKLoginButton!
+    @IBOutlet weak var loginModeSwitcherButton: UIButton!
+    
+    struct Constants {
+        static let userListSegueID = "showUserList"
+    }
     
     enum ControllerType {
         case signin
@@ -23,6 +38,7 @@ class LoginViewController: UIViewController {
             }
         }
     }
+    
     var controllerType: ControllerType = .signin{
         didSet {
             self.loginLabel.alpha = 0.0
@@ -31,7 +47,8 @@ class LoginViewController: UIViewController {
                 self.loginStackView.transform =
                     CGAffineTransform(scaleX: 1.0, y: 0.1)
                         .concatenating(
-                            CGAffineTransform(translationX: 0.0, y: self.loginStackView.bounds.height))
+                            CGAffineTransform(translationX: 0.0,
+                                              y: self.loginStackView.bounds.height))
             }) { fin  in
                 UIView.animate(withDuration: 0.4, animations: {
                     self.loginStackView.alpha = 1.0
@@ -43,28 +60,24 @@ class LoginViewController: UIViewController {
             case .signin:
                 loginButton.setTitle("Sign in", for: .normal)
                 loginLabel.text = "Sign in"
+                loginModeSwitcherButton.setTitle("Create new user", for: .normal)
             case .signup:
                 loginButton.setTitle("Sign up", for: .normal)
                 loginLabel.text = "Sign up"
+                loginModeSwitcherButton.setTitle("Go to sigin", for: .normal)
             }
         }
     }
     
-    @IBOutlet weak var loginLabel: UILabel!
-    @IBOutlet weak var loginStackView: UIStackView!
-    @IBOutlet weak var loginButton: UIButton!
-    @IBOutlet weak var facebookLoginButtonContriner: UIView!
-    @IBOutlet weak var usernameTextField: UITextField!
-    @IBOutlet weak var passwordTextField: UITextField!
-    var fbLoginButton: FBSDKLoginButton!
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         configureUI()
+        addActions()
     }
     
-    //MARK: Initialization
+//MARK: - Initialization
     func configureUI() {
+        loginButton.isEnabled = false
         //facebook login button
         let container = facebookLoginButtonContriner!
         fbLoginButton = FBSDKLoginButton(frame: .zero)
@@ -112,11 +125,124 @@ class LoginViewController: UIViewController {
         }
         configureFiled(usernameTextField)
         configureFiled(passwordTextField)
+        //Configure HUD
+        APESuperHUD.appearance.backgroundBlurEffect = .light
+        APESuperHUD.appearance.defaultDurationTime = 2.0
+        APESuperHUD.appearance.hudSquareSize = 250
+        APESuperHUD.appearance.animateInTime = 0.4
+        APESuperHUD.appearance.animateOutTime = 1.0
     }
+    
+    func addActions() {
+        
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(keyboardWillShow),
+                                               name: .UIKeyboardWillShow, object: nil)
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(keyboardWillHide),
+                                               name: .UIKeyboardWillHide, object: nil)
+        usernameTextField.addTarget(self,
+                                    action: #selector(textFieldDidChange(textField:)),
+                                    for: .editingChanged)
+        passwordTextField.addTarget(self,
+                                    action: #selector(textFieldDidChange(textField:)),
+                                    for: .editingChanged)
+        usernameTextField.delegate = self
+        passwordTextField.delegate = self
+    
+        view.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(endEditing)))
+    }
+    
+    @objc func endEditing(){
+        self.view.endEditing(true)
+    }
+    
     //MARK: - Actions
     @IBAction func newUserButtonTapped(_ sender: UIButton) {
         controllerType = !controllerType
     }
     
+    @IBAction func loginButtonTapped(_ sender: UIButton) {
+        self.view.isUserInteractionEnabled = false
+        APESuperHUD.showOrUpdateHUD(loadingIndicator: .standard,
+                                    message: "Signin in ..",
+                                    presentingView: view)
+        switch controllerType {
+        case .signin:
+            signin { result in
+                self.loginComplited(with: result)
+            }
+        case .signup:
+            signup { result in
+                self.loginComplited(with: result)
+            }
+        }
+    }
+    
+    func loginComplited(with result: LoginResult) {
+        self.view.isUserInteractionEnabled = true
+        switch result {
+        case .failure(with: let error):
+            showError(error)
+        case .success(user: let user):
+            APESuperHUD.removeHUD(animated: true, presentingView: self.view)
+            performSegue(withIdentifier: Constants.userListSegueID, sender: nil)
+        }
+    }
+    
+    private func showError(_ error: Error) {
+        APESuperHUD.showOrUpdateHUD(icon: .sadFace,
+                                    message: "Can't login \n" + error.localizedDescription,
+                                    presentingView: self.view)
+
+    }
+    
 }
 
+//MARK: - Text Fields
+extension LoginViewController: UITextFieldDelegate {
+    
+    @objc func keyboardWillShow(notification: NSNotification) {
+        if let _ = (notification.userInfo?[UIKeyboardFrameBeginUserInfoKey] as? NSValue)?.cgRectValue {
+           textFieldsBottomConstraint.constant += 100
+            UIView.animate(withDuration: 0.3, animations: {
+                self.view.layoutIfNeeded()
+            })
+        }
+    }
+    
+    @objc func keyboardWillHide(notification: NSNotification) {
+        if let _ = (notification.userInfo?[UIKeyboardFrameBeginUserInfoKey] as? NSValue)?.cgRectValue {
+            textFieldsBottomConstraint.constant -= 100
+            UIView.animate(withDuration: 0.3, animations: {
+                self.view.layoutIfNeeded()
+            })
+        }
+    }
+    
+    @objc func textFieldDidChange(textField: UITextField) {
+       loginButton.isEnabled = chekTextFields()
+    }
+    
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        if textField == usernameTextField {
+            passwordTextField.becomeFirstResponder()
+        } else {
+            view.endEditing(true)
+        }
+        return true
+    }
+    
+    func chekTextFields() -> Bool {
+        guard let nameText = usernameTextField.text,
+                let passwordText = passwordTextField.text
+        else {
+            return false
+        }
+        if passwordText.count < 6 || !nameText.isValidEmail() {
+            return false
+        }
+        return true
+    }
+    
+}

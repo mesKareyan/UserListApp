@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13196" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="ce7-kT-F2V">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13196" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="2eq-i8-Qm5">
     <device id="retina4_0" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
@@ -36,12 +36,12 @@
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" spacing="16" translatesAutoresizingMaskIntoConstraints="NO" id="myQ-WA-9JT">
                                 <rect key="frame" x="16" y="274" width="288" height="164"/>
                                 <subviews>
-                                    <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Username" textAlignment="justified" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="3z6-4a-w0q">
+                                    <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="email" textAlignment="justified" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="3z6-4a-w0q">
                                         <rect key="frame" x="0.0" y="0.0" width="288" height="44"/>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                        <textInputTraits key="textInputTraits"/>
+                                        <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" keyboardType="emailAddress" returnKeyType="next" smartDashesType="no" smartInsertDeleteType="no" smartQuotesType="no" textContentType="username"/>
                                     </textField>
                                     <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" highlighted="YES" selected="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Password" textAlignment="justified" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="sQ0-Xh-mgx">
                                         <rect key="frame" x="0.0" y="60" width="288" height="44"/>
@@ -49,13 +49,16 @@
                                         <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                        <textInputTraits key="textInputTraits"/>
+                                        <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" returnKeyType="done" secureTextEntry="YES" smartDashesType="no" smartInsertDeleteType="no" smartQuotesType="no" textContentType="password"/>
                                     </textField>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="sRF-FQ-uqY">
                                         <rect key="frame" x="0.0" y="120" width="288" height="44"/>
                                         <state key="normal" title="Sign in" backgroundImage="orangeButton.png">
                                             <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         </state>
+                                        <connections>
+                                            <action selector="loginButtonTapped:" destination="2eq-i8-Qm5" eventType="touchUpInside" id="vmA-q7-FTS"/>
+                                        </connections>
                                     </button>
                                 </subviews>
                                 <constraints>
@@ -81,7 +84,7 @@
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Lsb-Te-IKh">
                                         <rect key="frame" x="0.0" y="82" width="288" height="28"/>
                                         <fontDescription key="fontDescription" style="UICTFontTextStyleFootnote"/>
-                                        <state key="normal" title="Create new account">
+                                        <state key="normal" title="Create new user">
                                             <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         </state>
                                         <connections>
@@ -152,14 +155,17 @@
                         <outlet property="facebookLoginButtonContriner" destination="yBa-tB-ZLo" id="HbX-nD-Skl"/>
                         <outlet property="loginButton" destination="sRF-FQ-uqY" id="x28-Dt-yUq"/>
                         <outlet property="loginLabel" destination="X7r-An-ut4" id="WMU-EY-g4x"/>
+                        <outlet property="loginModeSwitcherButton" destination="Lsb-Te-IKh" id="MF9-eE-i8p"/>
                         <outlet property="loginStackView" destination="myQ-WA-9JT" id="n7E-SI-60A"/>
                         <outlet property="passwordTextField" destination="sQ0-Xh-mgx" id="L91-rc-HNF"/>
+                        <outlet property="textFieldsBottomConstraint" destination="fSm-1F-lrv" id="Jd2-eP-1Bb"/>
                         <outlet property="usernameTextField" destination="3z6-4a-w0q" id="xln-kb-UJ8"/>
+                        <segue destination="ce7-kT-F2V" kind="presentation" identifier="showUserList" id="P4H-A1-ReB"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="0tV-9u-und" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-80.625" y="132.04225352112675"/>
+            <point key="canvasLocation" x="-81" y="151"/>
         </scene>
         <!--Users-->
         <scene sceneID="iwB-K4-Xeg">
