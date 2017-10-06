@@ -24,24 +24,34 @@ enum RequestError: Error {
 
 class FirebaseDatabaseManager {
     
-    private init() { dbReference = Database.database().reference() }
+    private init() {
+        dbReference = Database.database().reference()
+        interestsReference = Database.database()
+            .reference(withPath:DatabaseReferencePath.interests)
+        usersReference = Database.database()
+            .reference(withPath: DatabaseReferencePath.users)
+    }
     static let shared = FirebaseDatabaseManager()
-    var dbReference: DatabaseReference!
     
-    private struct DatabaseStructure {
+    //refs
+    let dbReference: DatabaseReference
+    let interestsReference: DatabaseReference
+    let usersReference: DatabaseReference
+
+    private struct DatabaseReferencePath {
         private init(){}
         static let interests = "interests"
         static let users = "users"
     }
     
     func usersListAdd(user: UserData) {
-        let usersRef = dbReference.child(DatabaseStructure.users)
+        let usersRef = dbReference.child(DatabaseReferencePath.users)
         usersRef.child(user.id).setValue(user.dictRepresentation)
     }
     
     func getInterestsList(completion: @escaping RequestCompletion) {
         dbReference
-            .child(DatabaseStructure.interests)
+            .child(DatabaseReferencePath.interests)
             .observeSingleEvent(of: .value, with: { snapshot in
                 if let value = snapshot.value {
                         completion(.success(user: value))
@@ -54,5 +64,6 @@ class FirebaseDatabaseManager {
                 completion(.failure(with: error))
         }
     }
+    
     
 }

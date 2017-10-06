@@ -8,11 +8,23 @@
 
 import UIKit
 import SDWebImage
+import MessageUI
+import APESuperHUD
+
+protocol LeftViewDelegate: class {
+    
+    func profileRowTapped()
+    func feedbackRowTapped()
+    func infoRowTapped()
+    func signOutRowTapped()
+    
+}
 
 class LeftViewController: UITableViewController {
 
     private var leftborderAdded = false
     @IBOutlet weak var profileImageView: UIImageView!
+    weak var leftViewDelegate: LeftViewDelegate!
     
     @IBOutlet weak var profileNameLabel: UILabel!
     
@@ -56,4 +68,58 @@ class LeftViewController: UITableViewController {
 
     }
 
+}
+
+// MARK: - TableView Delegate
+extension LeftViewController {
+    
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        switch indexPath.row {
+        case 0:
+            leftViewDelegate.profileRowTapped()
+        case 1:
+            leftViewDelegate.feedbackRowTapped()
+            sendMail()
+        case 2:
+            leftViewDelegate.infoRowTapped()
+        case 4:
+            leftViewDelegate.signOutRowTapped()
+        default:
+            break
+        }
+    }
+}
+
+extension LeftViewController: MFMailComposeViewControllerDelegate {
+    
+    func sendMail() {
+        let mailComposeViewController = configuredMailComposeViewController()
+        if MFMailComposeViewController.canSendMail() {
+            self.present(mailComposeViewController, animated: true, completion: nil)
+        } else {
+            self.showSendMailErrorAlert()
+        }
+    }
+    
+    func configuredMailComposeViewController() -> MFMailComposeViewController {
+       
+        let mailComposerVC = MFMailComposeViewController()
+        let emailAdress = UserManager.currentUserData.email
+        mailComposerVC.mailComposeDelegate = self
+        mailComposerVC.setToRecipients([emailAdress])
+        mailComposerVC.setSubject("Test message")
+        mailComposerVC.setMessageBody("Firebase here!", isHTML: false)
+        return mailComposerVC
+    }
+    
+    func showSendMailErrorAlert() {
+        APESuperHUD.showOrUpdateHUD(icon: .sadFace,
+                                    message: "Can't send mail",
+                                    presentingView: self.view)
+    }
+    
+    // MARK: MFMailComposeViewControllerDelegate Method
+    func mailComposeController(_ controller: MFMailComposeViewController, didFinishWith result: MFMailComposeResult, error: Error?) {
+        controller.dismiss(animated: true, completion: nil)
+    }
 }

@@ -12,6 +12,11 @@ class UserTableViewCell: UITableViewCell {
 
     @IBOutlet weak var userNameLabel: UILabel!
     @IBOutlet weak var userImageView: UIImageView!
+    var userData: UserData! {
+        didSet {
+            updateUI()
+        }
+    }
     
     @IBOutlet weak var cardViewbackground: UIView!
     
@@ -24,12 +29,23 @@ class UserTableViewCell: UITableViewCell {
         cardViewbackground.layer.shadowOpacity = 0.8
         cardViewbackground.layer.shadowRadius = 2.0
         cardViewbackground.layer.shadowOffset = CGSize(width: 0, height: 0)
+        
+        userImageView.layer.masksToBounds = true
+        userImageView.layer.cornerRadius = userImageView.bounds.height / 2
     }
 
     override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
         self.cardViewbackground.backgroundColor = selected ? .appLightBlue : .white
-        self.userNameLabel.textColor = selected ? .white : .black
+        self.userNameLabel.textColor = selected ? .white : .appLightBlue
+    }
+    
+    func updateUI() {
+        if let urlString = userData.avatarURL,
+            let url = URL(string: urlString) {
+            self.userImageView.sd_setImage(with: url)
+        }
+        self.userNameLabel.text = userData.name
     }
 
 }

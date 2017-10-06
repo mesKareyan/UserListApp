@@ -7,6 +7,8 @@
 //
 
 import UIKit
+import FirebaseAuth
+import FirebaseDatabase
 
 class UserListViewController: UIViewController {
 
@@ -14,13 +16,41 @@ class UserListViewController: UIViewController {
     @IBOutlet weak var leftViewLeftConstraint: NSLayoutConstraint!
     @IBOutlet weak var leftView: UIView!
     
+    let usersListRef = FirebaseDatabaseManager.shared.usersReference
+    var users: [UserData] = []
+    
     struct Constants {
         static let cellID = "userCell"
+        struct SegueID {
+            static let leftView = "leftView"
+        }
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         congigureUI()
+        usersListRef.observe(.value, with: { snapshot in
+            var usersList: [UserData] = []
+            for item in snapshot.children {
+                let groceryItem = UserData(snapshot: item as! DataSnapshot)
+                usersList.append(groceryItem)
+            }
+            self.users = usersList
+            self.tableView.reloadData()
+        })
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        super.prepare(for: segue, sender: sender)
+        guard let segueIdentifier = segue.identifier else {
+            return
+        }
+        switch segueIdentifier {
+        case Constants.SegueID.leftView:
+            (segue.destination as! LeftViewController).leftViewDelegate = self
+        default:
+            break
+        }
     }
     
     func congigureUI() {
@@ -77,12 +107,12 @@ extension UserListViewController: UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 10
+        return users.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: Constants.cellID) as! UserTableViewCell
-        cell.layer.borderColor = UIColor.groupTableViewBackground.cgColor
+        cell.userData = users[indexPath.row]
         return cell
     }
     
@@ -93,5 +123,37 @@ extension UserListViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         print("Selected: ", indexPath)
     }
+}
+
+extension UserListViewController: LeftViewDelegate {
+    
+    func profileRowTapped() {
+        
+    }
+    
+    func feedbackRowTapped() {
+        
+    }
+    
+    func infoRowTapped() {
+        
+    }
+    
+    func signOutRowTapped() {
+        
+        let alert = UIAlertController(title: "Sign out ?", message: "", preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "OK", style: .destructive, handler: { action in
+            do {
+                try Auth.auth().signOut()
+                self.dismiss(animated: true, completion: nil)
+            } catch let error as NSError {
+                print(error.localizedDescription)
+            }
+        }))
+        alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
+        present(alert, animated: true, completion: nil)
+       
+    }
+    
     
 }

@@ -10,31 +10,29 @@ import UIKit
 
 class InterestsListViewController: UITableViewController {
     
+    let interestsRef = FirebaseDatabaseManager.shared.interestsReference
     var interests: [String] = []
-    var selectedCellIndexPath: IndexPath!
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
-        FirebaseDatabaseManager.shared.getInterestsList { result in
-            switch result {
-            case .failure(with: let error):
-                print(error.localizedDescription)
-            case .success(user: let value):
-                print(type(of: value))
-                if let valueDict = value as? NSDictionary {
-                    for (key, _) in valueDict {
-                        self.interests.append(key as! String)
+        interestsRef
+            .queryOrdered(byChild: "name")
+            .observe(.value, with:
+                { snapshot in
+                    var interests: [String] = []
+                    guard let values = snapshot.value as? Dictionary<String, Any> else {
+                        return
                     }
-                }
-                DispatchQueue.main.async {
+                    for (key, _) in values {
+                        interests.append(key)
+                    }
+                    self.interests = interests
                     self.tableView.reloadData()
-                }
-            }
-        }
+            })
     }
-
+    
     // MARK: - Table view data source
-
+    
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return interests.count
     }
@@ -58,5 +56,5 @@ class InterestsListViewController: UITableViewController {
         return "Interests"
     }
     
-
+    
 }

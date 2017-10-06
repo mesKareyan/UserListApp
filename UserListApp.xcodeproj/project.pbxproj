@@ -17,8 +17,10 @@
 		B21F23AF1F856968006CC65A /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B21F23AD1F856968006CC65A /* LaunchScreen.storyboard */; };
 		B21F23B81F8569A4006CC65A /* Background.png in Resources */ = {isa = PBXBuildFile; fileRef = B21F23B71F856989006CC65A /* Background.png */; };
 		B21F23BA1F856BE0006CC65A /* orangeButton.png in Resources */ = {isa = PBXBuildFile; fileRef = B21F23B91F856BCD006CC65A /* orangeButton.png */; };
-		B24CDCB61F868B44009DEF44 /* FirebaseManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B24CDCB51F868B44009DEF44 /* FirebaseManager.swift */; };
+		B24CDCB61F868B44009DEF44 /* FirebaseDatabaseManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B24CDCB51F868B44009DEF44 /* FirebaseDatabaseManager.swift */; };
 		B24CDCB81F86ACF3009DEF44 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = B24CDCB71F86ACF3009DEF44 /* Constants.swift */; };
+		B25A09C91F879BDE0054A249 /* LeftViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B25A09C81F879BDE0054A249 /* LeftViewCell.swift */; };
+		B25A09CB1F879F680054A249 /* AboutViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B25A09CA1F879F680054A249 /* AboutViewController.swift */; };
 		B27F7FEE1F86105100F76E9D /* UserListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B27F7FED1F86105100F76E9D /* UserListViewController.swift */; };
 		B27F7FF11F8619A700F76E9D /* UserTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B27F7FF01F8619A700F76E9D /* UserTableViewCell.swift */; };
 		B297FA791F86D1F0002E2A1F /* InterestsListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B297FA781F86D1F0002E2A1F /* InterestsListViewController.swift */; };
@@ -44,8 +46,10 @@
 		B21F23B01F856968006CC65A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		B21F23B71F856989006CC65A /* Background.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Background.png; sourceTree = "<group>"; };
 		B21F23B91F856BCD006CC65A /* orangeButton.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = orangeButton.png; sourceTree = "<group>"; };
-		B24CDCB51F868B44009DEF44 /* FirebaseManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseManager.swift; sourceTree = "<group>"; };
+		B24CDCB51F868B44009DEF44 /* FirebaseDatabaseManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseDatabaseManager.swift; sourceTree = "<group>"; };
 		B24CDCB71F86ACF3009DEF44 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
+		B25A09C81F879BDE0054A249 /* LeftViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LeftViewCell.swift; sourceTree = "<group>"; };
+		B25A09CA1F879F680054A249 /* AboutViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AboutViewController.swift; sourceTree = "<group>"; };
 		B27F7FED1F86105100F76E9D /* UserListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserListViewController.swift; sourceTree = "<group>"; };
 		B27F7FF01F8619A700F76E9D /* UserTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserTableViewCell.swift; sourceTree = "<group>"; };
 		B297FA781F86D1F0002E2A1F /* InterestsListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InterestsListViewController.swift; sourceTree = "<group>"; };
@@ -143,6 +147,7 @@
 			isa = PBXGroup;
 			children = (
 				B27F7FF01F8619A700F76E9D /* UserTableViewCell.swift */,
+				B25A09C81F879BDE0054A249 /* LeftViewCell.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -150,7 +155,7 @@
 		B297FA771F86D1C0002E2A1F /* Managers */ = {
 			isa = PBXGroup;
 			children = (
-				B24CDCB51F868B44009DEF44 /* FirebaseManager.swift */,
+				B24CDCB51F868B44009DEF44 /* FirebaseDatabaseManager.swift */,
 				B21C58701F8765E100C9ED4B /* UserManager.swift */,
 			);
 			path = Managers;
@@ -165,6 +170,7 @@
 				B27F7FED1F86105100F76E9D /* UserListViewController.swift */,
 				B2BDA0A61F862B4100E1B628 /* ProfileEditingViewController.swift */,
 				B297FA781F86D1F0002E2A1F /* InterestsListViewController.swift */,
+				B25A09CA1F879F680054A249 /* AboutViewController.swift */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -325,11 +331,13 @@
 			buildActionMask = 2147483647;
 			files = (
 				B27F7FEE1F86105100F76E9D /* UserListViewController.swift in Sources */,
+				B25A09C91F879BDE0054A249 /* LeftViewCell.swift in Sources */,
 				B297FA791F86D1F0002E2A1F /* InterestsListViewController.swift in Sources */,
+				B25A09CB1F879F680054A249 /* AboutViewController.swift in Sources */,
 				B2E39A791F8601CA00A0D691 /* LeftViewController.swift in Sources */,
 				B21C58711F8765E100C9ED4B /* UserManager.swift in Sources */,
 				B21F23A71F856968006CC65A /* LoginViewController.swift in Sources */,
-				B24CDCB61F868B44009DEF44 /* FirebaseManager.swift in Sources */,
+				B24CDCB61F868B44009DEF44 /* FirebaseDatabaseManager.swift in Sources */,
 				B21F23A51F856968006CC65A /* AppDelegate.swift in Sources */,
 				B21C586E1F8763A600C9ED4B /* UserData.swift in Sources */,
 				B24CDCB81F86ACF3009DEF44 /* Constants.swift in Sources */,
