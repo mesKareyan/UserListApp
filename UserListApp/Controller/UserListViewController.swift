@@ -23,6 +23,7 @@ class UserListViewController: UIViewController {
         static let cellID = "userCell"
         struct SegueID {
             static let leftView = "leftView"
+            static let showUserProfile = "showUserProfile"
         }
     }
     
@@ -32,8 +33,8 @@ class UserListViewController: UIViewController {
         usersListRef.observe(.value, with: { snapshot in
             var usersList: [UserData] = []
             for item in snapshot.children {
-                let groceryItem = UserData(snapshot: item as! DataSnapshot)
-                usersList.append(groceryItem)
+                let item = UserData(snapshot: item as! DataSnapshot)
+                usersList.append(item)
             }
             self.users = usersList
             self.tableView.reloadData()
@@ -48,9 +49,17 @@ class UserListViewController: UIViewController {
         switch segueIdentifier {
         case Constants.SegueID.leftView:
             (segue.destination as! LeftViewController).leftViewDelegate = self
+        case Constants.SegueID.showUserProfile:
+            let profileController = segue.destination as! ProfileViewController
+            profileController.isEditable = false
+            let senderCell = sender as! UITableViewCell
+            if let index = tableView.indexPath(for: senderCell)?.row {
+                profileController.user = users[index]
+            }
         default:
             break
         }
+        
     }
     
     func congigureUI() {

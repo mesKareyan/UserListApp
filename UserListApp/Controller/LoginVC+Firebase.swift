@@ -41,12 +41,22 @@ extension LoginViewController {
                 completion(.failure(with: error!))
                 return
             }
-            guard let user = user else {
+            guard let _ = user else {
                 completion(.failure(with: FirbaseLoginError.emailLoginError))
                 return
             }
-            UserManager.createNew(user: user)
-            completion(.success(user: user))
+            Auth.auth().signIn(withEmail: email, password: password, completion: { (user, erroor) in
+                guard error == nil else {
+                    completion(.failure(with: error!))
+                    return
+                }
+                guard let user = user else {
+                    completion(.failure(with: FirbaseLoginError.emailLoginError))
+                    return
+                }
+                UserManager.createNew(user: user)
+                completion(.success(user: user))
+            })
         }
     }
     
@@ -112,10 +122,7 @@ extension LoginViewController: FBSDKLoginButtonDelegate {
                         return
                     }
                     //signed in
-                    var userData = UserData(id: user.uid, email: userDataDict["email"]!)
-                    userData.name = userDataDict["name"]!
-                    userData.avatarURL = userDataDict["avatar"]!
-                    UserManager.updateUser(with: userData)
+                    UserManager.createNew(user: user)
                     self.userDidSignedIn(user: user)
                 }
             }

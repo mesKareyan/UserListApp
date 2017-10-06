@@ -8,19 +8,28 @@
 
 import Foundation
 import FirebaseDatabase
+import Firebase
 
-struct UserData {
+class UserData {
     
-    let email:  String
     let id:     String
+    let email:  String?
     var name:   String?
     var age:    Int?
     var avatarURL: String?
     var interests: [String] = []
+
+    var databaseUserRef: DatabaseReference!
+    var fireBaseUser: User!
     
-    init(id: String, email: String) {
-        self.email = email
-        self.id = id
+    init(fireBaseUser: Firebase.User) {
+        self.email     = fireBaseUser.email
+        self.name      = fireBaseUser.displayName
+        self.avatarURL = fireBaseUser.photoURL?.absoluteString
+        self.id        = fireBaseUser.uid
+        self.fireBaseUser   = fireBaseUser
+        self.databaseUserRef = FirebaseDatabaseManager.shared
+            .usersReference.child(fireBaseUser.uid)
     }
     
     init(snapshot: DataSnapshot) {
@@ -40,12 +49,21 @@ struct UserData {
         if let name = snapshotValue["name"] as? String {
             self.name = name
         }
+        if snapshot.hasChild("interests") {
+            if  let interestsSnapValue = snapshot.childSnapshot(
+                forPath: "interests").value as? NSDictionary {
+                let interests = interestsSnapValue.allKeys as! [String]
+                self.interests = interests
+            }
+        }
+        self.databaseUserRef = snapshot.ref
     }
     
     var dictRepresentation: Dictionary<String, String> {
-        var dict = [
-            "email" : email,
-            ]
+        var dict = [String: String]()
+        if let email = email {
+            dict["email"] = email
+        }
         if let name = name {
             dict["name"] = name
         }

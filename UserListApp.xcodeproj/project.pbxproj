@@ -17,6 +17,7 @@
 		B21F23AF1F856968006CC65A /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B21F23AD1F856968006CC65A /* LaunchScreen.storyboard */; };
 		B21F23B81F8569A4006CC65A /* Background.png in Resources */ = {isa = PBXBuildFile; fileRef = B21F23B71F856989006CC65A /* Background.png */; };
 		B21F23BA1F856BE0006CC65A /* orangeButton.png in Resources */ = {isa = PBXBuildFile; fileRef = B21F23B91F856BCD006CC65A /* orangeButton.png */; };
+		B24CA4FB1F8800FB00D5D74B /* FirebaseStorageManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B24CA4FA1F8800FB00D5D74B /* FirebaseStorageManager.swift */; };
 		B24CDCB61F868B44009DEF44 /* FirebaseDatabaseManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B24CDCB51F868B44009DEF44 /* FirebaseDatabaseManager.swift */; };
 		B24CDCB81F86ACF3009DEF44 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = B24CDCB71F86ACF3009DEF44 /* Constants.swift */; };
 		B25A09C91F879BDE0054A249 /* LeftViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B25A09C81F879BDE0054A249 /* LeftViewCell.swift */; };
@@ -46,6 +47,8 @@
 		B21F23B01F856968006CC65A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		B21F23B71F856989006CC65A /* Background.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Background.png; sourceTree = "<group>"; };
 		B21F23B91F856BCD006CC65A /* orangeButton.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = orangeButton.png; sourceTree = "<group>"; };
+		B23FF6851F87E6C200572960 /* UserListApp.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = UserListApp.entitlements; sourceTree = "<group>"; };
+		B24CA4FA1F8800FB00D5D74B /* FirebaseStorageManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseStorageManager.swift; sourceTree = "<group>"; };
 		B24CDCB51F868B44009DEF44 /* FirebaseDatabaseManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseDatabaseManager.swift; sourceTree = "<group>"; };
 		B24CDCB71F86ACF3009DEF44 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		B25A09C81F879BDE0054A249 /* LeftViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LeftViewCell.swift; sourceTree = "<group>"; };
@@ -118,6 +121,7 @@
 		B21F23A31F856968006CC65A /* UserListApp */ = {
 			isa = PBXGroup;
 			children = (
+				B23FF6851F87E6C200572960 /* UserListApp.entitlements */,
 				B2E39A7A1F8601F700A0D691 /* Helpers */,
 				B21F23B61F856976006CC65A /* Resources */,
 				B297FA771F86D1C0002E2A1F /* Managers */,
@@ -157,6 +161,7 @@
 			children = (
 				B24CDCB51F868B44009DEF44 /* FirebaseDatabaseManager.swift */,
 				B21C58701F8765E100C9ED4B /* UserManager.swift */,
+				B24CA4FA1F8800FB00D5D74B /* FirebaseStorageManager.swift */,
 			);
 			path = Managers;
 			sourceTree = "<group>";
@@ -220,6 +225,11 @@
 					B21F23A01F856968006CC65A = {
 						CreatedOnToolsVersion = 9.0;
 						ProvisioningStyle = Automatic;
+						SystemCapabilities = {
+							com.apple.Keychain = {
+								enabled = 1;
+							};
+						};
 					};
 				};
 			};
@@ -338,6 +348,7 @@
 				B21C58711F8765E100C9ED4B /* UserManager.swift in Sources */,
 				B21F23A71F856968006CC65A /* LoginViewController.swift in Sources */,
 				B24CDCB61F868B44009DEF44 /* FirebaseDatabaseManager.swift in Sources */,
+				B24CA4FB1F8800FB00D5D74B /* FirebaseStorageManager.swift in Sources */,
 				B21F23A51F856968006CC65A /* AppDelegate.swift in Sources */,
 				B21C586E1F8763A600C9ED4B /* UserData.swift in Sources */,
 				B24CDCB81F86ACF3009DEF44 /* Constants.swift in Sources */,
@@ -482,8 +493,9 @@
 			baseConfigurationReference = 99CBDFB79EAF34AA38C5661C /* Pods-UserListApp.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = UserListApp/UserListApp.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = F4KF659SS5;
+				DEVELOPMENT_TEAM = N2KSTMK2LH;
 				INFOPLIST_FILE = UserListApp/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -499,8 +511,9 @@
 			baseConfigurationReference = AF0C6AC0F5C310DCAB557ED8 /* Pods-UserListApp.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = UserListApp/UserListApp.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = F4KF659SS5;
+				DEVELOPMENT_TEAM = N2KSTMK2LH;
 				INFOPLIST_FILE = UserListApp/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";

@@ -9,6 +9,7 @@
 import UIKit
 import FBSDKLoginKit
 import APESuperHUD
+import FirebaseAuth
 
 class LoginViewController: UIViewController {
     
@@ -73,6 +74,11 @@ class LoginViewController: UIViewController {
         super.viewDidLoad()
         configureUI()
         addActions()
+        if let user = Auth.auth().currentUser {
+            UserManager.currentUserData = UserData(fireBaseUser: user)
+            userDidSignedIn(user: user)
+            return
+        }        
     }
     
     override func viewWillAppear(_ animated: Bool) {

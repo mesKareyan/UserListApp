@@ -21,11 +21,17 @@ protocol LeftViewDelegate: class {
 }
 
 class LeftViewController: UITableViewController {
+    
+    struct Constants {
+        struct Segure {
+            static let showProfile = "showProfile"
+        }
+    }
 
     private var leftborderAdded = false
-    @IBOutlet weak var profileImageView: UIImageView!
     weak var leftViewDelegate: LeftViewDelegate!
-    
+
+    @IBOutlet weak var profileImageView: UIImageView!
     @IBOutlet weak var profileNameLabel: UILabel!
     
     override func viewDidLoad() {
@@ -35,6 +41,19 @@ class LeftViewController: UITableViewController {
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         counfigureUI()
+        NotificationCenter.default.addObserver(forName: .ulapp_userImageChanged, object: nil, queue: .main) { notif in
+            let user = UserManager.currentUserData
+            if let avatarURL = user?.avatarURL {
+                self.profileImageView.sd_setImage(
+                    with: URL(string: avatarURL),
+                    placeholderImage: #imageLiteral(resourceName: "User")
+                )
+            }
+        }
+    }
+    
+    deinit {
+        NotificationCenter.default.removeObserver(self)
     }
     
     func counfigureUI(){
@@ -66,6 +85,21 @@ class LeftViewController: UITableViewController {
         }
         profileNameLabel.text = currentUser?.name
 
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        super.prepare(for: segue, sender: sender)
+        guard let identifier = segue.identifier else {
+            return
+        }
+        switch identifier {
+        case Constants.Segure.showProfile:
+            let profile = segue.destination as! ProfileViewController
+            profile.isEditable = true
+            profile.user = UserManager.currentUserData
+        default:
+            break
+        }
     }
 
 }
@@ -104,7 +138,7 @@ extension LeftViewController: MFMailComposeViewControllerDelegate {
     func configuredMailComposeViewController() -> MFMailComposeViewController {
        
         let mailComposerVC = MFMailComposeViewController()
-        let emailAdress = UserManager.currentUserData.email
+        let emailAdress = UserManager.currentUserData.email!
         mailComposerVC.mailComposeDelegate = self
         mailComposerVC.setToRecipients([emailAdress])
         mailComposerVC.setSubject("Test message")

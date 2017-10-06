@@ -12,6 +12,7 @@ class InterestsListViewController: UITableViewController {
     
     let interestsRef = FirebaseDatabaseManager.shared.interestsReference
     var interests: [String] = []
+    var selectedInterests: Set<String>!
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -40,6 +41,8 @@ class InterestsListViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "interestsCell")!
         cell.textLabel?.text = interests[indexPath.row]
+        cell.accessoryType = selectedInterests.contains(cell.textLabel!.text!) ?
+                            .checkmark : .none
         return cell
     }
     
@@ -47,8 +50,10 @@ class InterestsListViewController: UITableViewController {
         let cell = tableView.cellForRow(at: indexPath)!
         if cell.accessoryType == .none {
             cell.accessoryType = .checkmark
+            selectedInterests.insert(cell.textLabel!.text!)
         } else {
             cell.accessoryType = .none
+            selectedInterests.remove(cell.textLabel!.text!)
         }
     }
     

@@ -52,3 +52,8 @@ extension UIApplication {
     }
     
 }
+
+extension Notification.Name {
+    static let ulapp_userImageChanged = Notification.Name("ulapp_userImageChanged")
+}
+
