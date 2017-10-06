@@ -7,11 +7,21 @@
 //
 
 import UIKit
+import SDWebImage
 
-class ProfileEditingViewController: UITableViewController {
+class ProfileViewController: UITableViewController {
 
     @IBOutlet weak var userImageView: UIImageView!
     @IBOutlet weak var userNameTextField: UITextField!
+    
+    @IBOutlet weak var nameTextField: UITextField!
+    @IBOutlet weak var emailTextField: UITextField!
+    @IBOutlet weak var ageTextField: UITextField!
+    @IBOutlet weak var interestsTextView: UITextView!
+    @IBOutlet weak var interestChangeButton: UIButton!
+    
+    var isEditable = true
+    var user: UserData!
     
     var navBarImage: UIImage!
     var navBarShadowImge: UIImage!
@@ -43,6 +53,33 @@ class ProfileEditingViewController: UITableViewController {
         userImageView.layer.cornerRadius = userImageView.bounds.height / 2.0
         userNameTextField.layer.cornerRadius = userNameTextField.bounds.height / 2.0
         userNameTextField.backgroundColor = UIColor.white.withAlphaComponent(0.2)
+        [nameTextField, emailTextField, ageTextField].forEach {
+            $0?.isEnabled = self.isEditable
+        }
+        interestsTextView.isEditable = self.isEditable
+        interestChangeButton.isHidden = !self.isEditable
+        //configure user data
+        if let avatarURL = user.avatarURL {
+            userImageView.sd_setImage(
+                with: URL(string: avatarURL),
+                placeholderImage: #imageLiteral(resourceName: "User")
+            )
+        }
+        nameTextField.text = user.name
+        userNameTextField.text = user.name
+        emailTextField.text = user.email
+        if let userAge = user.age {
+            ageTextField.text =  String(userAge)
+        }
+        let interestsString = user.interests.reduce("") { (result, next) -> String in
+            return result  + " ," + next
+        }
+        interestsTextView.text = interestsString
     }
+    
+    //MARK: Actions
 
+    @IBAction func interestChengeButtonTapped(_ sender: UIButton) {
+    }
+    
 }

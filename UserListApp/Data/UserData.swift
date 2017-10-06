@@ -16,6 +16,7 @@ struct UserData {
     var name:   String?
     var age:    Int?
     var avatarURL: String?
+    var interests: [String] = []
     
     init(id: String, email: String) {
         self.email = email
