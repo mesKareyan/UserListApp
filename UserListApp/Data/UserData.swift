@@ -17,8 +17,8 @@ class UserData {
     var name:   String?
     var age:    Int?
     var avatarURL: String?
-    var interests: [String] = []
-
+    var interests: [String]!
+    
     var databaseUserRef: DatabaseReference!
     var fireBaseUser: User!
     
@@ -30,6 +30,15 @@ class UserData {
         self.fireBaseUser   = fireBaseUser
         self.databaseUserRef = FirebaseDatabaseManager.shared
             .usersReference.child(fireBaseUser.uid)
+    }
+    
+    func getInterests() {
+        self.databaseUserRef.child(DatabaseReferencePath.interests)
+            .observeSingleEvent(of: .value, with: { snapshot in
+                if let values = snapshot.value as? [String] {
+                    self.interests  = values
+                }
+            })
     }
     
     init(snapshot: DataSnapshot) {
@@ -59,8 +68,8 @@ class UserData {
         self.databaseUserRef = snapshot.ref
     }
     
-    var dictRepresentation: Dictionary<String, String> {
-        var dict = [String: String]()
+    var dictRepresentation: Dictionary<String, Any> {
+        var dict = [String: Any]()
         if let email = email {
             dict["email"] = email
         }
@@ -73,6 +82,7 @@ class UserData {
         if let avatar = avatarURL {
             dict["avatar"] = avatar
         }
+        dict["intersts"] = self.interests
         return dict
     }
     

@@ -54,7 +54,7 @@ extension LoginViewController {
                     completion(.failure(with: FirbaseLoginError.emailLoginError))
                     return
                 }
-                UserManager.createNew(user: user)
+                UserManager.create(user: user, new: true)
                 completion(.success(user: user))
             })
         }
@@ -75,6 +75,7 @@ extension LoginViewController {
                 completion(.failure(with: FirbaseLoginError.emailLoginError))
                 return
             }
+            UserManager.create(user: user, new: false)
             completion(.success(user: user))
         }
     }
@@ -105,10 +106,7 @@ extension LoginViewController: FBSDKLoginButtonDelegate {
             switch result {
             case .failure(with: let error):
                 self.showError(error)
-            case .success(user: let data):
-                
-                let userDataDict = data as! Dictionary<String, String>
-                
+            case .success(user: _):
                 let credential = FacebookAuthProvider.credential(withAccessToken:
                     FBSDKAccessToken.current().tokenString)
                 Auth.auth().signIn(with: credential) { (user, error) in
@@ -122,12 +120,11 @@ extension LoginViewController: FBSDKLoginButtonDelegate {
                         return
                     }
                     //signed in
-                    UserManager.createNew(user: user)
+                    UserManager.create(user: user, new: true)
                     self.userDidSignedIn(user: user)
                 }
             }
         }
-        
     }
     
     private func getFacebookData(comletion: @escaping RequestCompletion) {

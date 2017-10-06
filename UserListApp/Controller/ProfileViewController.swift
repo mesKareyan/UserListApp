@@ -26,8 +26,15 @@ class ProfileViewController: UITableViewController {
     @IBOutlet weak var interestChangeButton: UIButton!
     @IBOutlet weak var agePickerView: UIPickerView!
     
-    var isEditable: Bool!
     var user: UserData!
+    lazy var selectedInterests: Set<String> = {
+        guard let interests = user.interests else {
+            return []
+        }
+        let list = Set(user.interests)
+        return list
+    }()
+    var isEditable: Bool!
     private var isImageChanged = false
     private var isAgePickerVisible = false
 
@@ -107,14 +114,18 @@ class ProfileViewController: UITableViewController {
         if let userAge = user.age {
             ageTextField.text =  String(userAge)
         }
-        let interestsString = user.interests
-            .reduce("") { (result, next) -> String in
-                return result  + " ," + next
-        }
-        interestsTextView.text = interestsString
         if let age = user.age {
             agePickerView.selectedRow(inComponent: age + 16)
         }
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        var interestsString = ""
+        for (index, interest) in self.selectedInterests.enumerated() {
+            interestsString  += (index == 0 ? "" : ", ") + interest
+        }
+        interestsTextView.text = interestsString
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -125,7 +136,7 @@ class ProfileViewController: UITableViewController {
         switch idnetifer {
         case Constants.SegueID.showInterests:
             let controller = segue.destination as! InterestsListViewController
-            controller.selectedInterests = Set(self.user.interests)
+            controller.selectedInterests = Set(self.selectedInterests)
         default:
             break
         }
@@ -201,6 +212,8 @@ extension ProfileViewController: UITextFieldDelegate {
             UserManager.updateUser(image: image) {
             }
         }
+        //change interest if needed
+        UserManager.updateUser(interests: Array(selectedInterests))
     }
     
     func addActions() {

@@ -12,12 +12,14 @@ import Firebase
 class UserManager {
     
     private init(){}
-    //static let shared = UserManager()
-    static var currentUserData: UserData!
+    static private(set) var currentUserData: UserData!
     
-    static func createNew(user: Firebase.User) {
-        currentUserData = UserData(fireBaseUser: user)
-        FirebaseDatabaseManager.shared.usersListAdd(user: currentUserData)
+    static func create(user firebaseUser: Firebase.User, new: Bool) {
+        currentUserData = UserData(fireBaseUser: firebaseUser)
+        currentUserData.getInterests()
+        if new {
+            FirebaseDatabaseManager.shared.usersListAdd(user: currentUserData)
+        }
     }
     
     //update
@@ -43,7 +45,7 @@ class UserManager {
     static func updateUser(interests: [String]) {
         currentUserData.interests = interests
         currentUserData.databaseUserRef.updateChildValues([
-            "intersts": interests
+            DatabaseReferencePath.interests: interests
             ])
     }
     static func updateUser(image: UIImage, completion: @escaping () -> ()) {

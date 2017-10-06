@@ -22,6 +22,12 @@ enum RequestError: Error {
     case facebookError
 }
 
+struct DatabaseReferencePath {
+    private init(){}
+    static let interests = "interests"
+    static let users = "users"
+}
+
 class FirebaseDatabaseManager {
     
     private init() {
@@ -37,16 +43,15 @@ class FirebaseDatabaseManager {
     let dbReference: DatabaseReference
     let interestsReference: DatabaseReference
     let usersReference: DatabaseReference
-
-    private struct DatabaseReferencePath {
-        private init(){}
-        static let interests = "interests"
-        static let users = "users"
-    }
     
     func usersListAdd(user: UserData) {
         let usersRef = dbReference.child(DatabaseReferencePath.users)
-        usersRef.child(user.id).setValue(user.dictRepresentation)
+        let userRef = usersRef.child(user.id)
+        userRef.observeSingleEvent(of: .value) { snapshot in
+            if !snapshot.exists() {
+                usersRef.child(user.id).setValue(user.dictRepresentation)
+            }
+        }
     }
     
     func getInterestsList(completion: @escaping RequestCompletion) {

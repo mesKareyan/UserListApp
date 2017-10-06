@@ -13,7 +13,8 @@ class InterestsListViewController: UITableViewController {
     let interestsRef = FirebaseDatabaseManager.shared.interestsReference
     var interests: [String] = []
     var selectedInterests: Set<String>!
-
+    weak var profileController: ProfileViewController!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         interestsRef
@@ -30,6 +31,17 @@ class InterestsListViewController: UITableViewController {
                     self.interests = interests
                     self.tableView.reloadData()
             })
+    }
+    
+    override func willMove(toParentViewController parent: UIViewController?) {
+        if parent != nil {
+            if let controllers = self.navigationController?.viewControllers {
+                let profileController = controllers[controllers.count - 2] as! ProfileViewController
+                self.profileController = profileController
+            }
+        } else {
+            self.profileController?.selectedInterests = selectedInterests
+        }
     }
     
     // MARK: - Table view data source
@@ -60,6 +72,5 @@ class InterestsListViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         return "Interests"
     }
-    
     
 }

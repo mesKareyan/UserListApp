@@ -75,7 +75,6 @@ class LoginViewController: UIViewController {
         configureUI()
         addActions()
         if let user = Auth.auth().currentUser {
-            UserManager.currentUserData = UserData(fireBaseUser: user)
             userDidSignedIn(user: user)
             return
         }        
