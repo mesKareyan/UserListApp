@@ -75,12 +75,19 @@ class LoginViewController: UIViewController {
         addActions()
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        self.textFieldsBottomConstraint.constant = 8
+    }
+    
 //MARK: - Initialization
     func configureUI() {
         loginButton.isEnabled = false
         //facebook login button
         let container = facebookLoginButtonContriner!
         fbLoginButton = FBSDKLoginButton(frame: .zero)
+        fbLoginButton.readPermissions = ["public_profile", "email"]
+        fbLoginButton.delegate = self
         container.addSubview(fbLoginButton)
         fbLoginButton.translatesAutoresizingMaskIntoConstraints = false
         fbLoginButton.leftAnchor.constraint(equalTo:
@@ -186,15 +193,14 @@ class LoginViewController: UIViewController {
             showError(error)
         case .success(user: let user):
             APESuperHUD.removeHUD(animated: true, presentingView: self.view)
-            performSegue(withIdentifier: Constants.userListSegueID, sender: nil)
+            userDidSignedIn(user: user)
         }
     }
     
-    private func showError(_ error: Error) {
+     func showError(_ error: Error) {
         APESuperHUD.showOrUpdateHUD(icon: .sadFace,
                                     message: "Can't login \n" + error.localizedDescription,
                                     presentingView: self.view)
-
     }
     
 }
@@ -204,7 +210,7 @@ extension LoginViewController: UITextFieldDelegate {
     
     @objc func keyboardWillShow(notification: NSNotification) {
         if let _ = (notification.userInfo?[UIKeyboardFrameBeginUserInfoKey] as? NSValue)?.cgRectValue {
-           textFieldsBottomConstraint.constant += 100
+           textFieldsBottomConstraint.constant = 110
             UIView.animate(withDuration: 0.3, animations: {
                 self.view.layoutIfNeeded()
             })
@@ -213,7 +219,7 @@ extension LoginViewController: UITextFieldDelegate {
     
     @objc func keyboardWillHide(notification: NSNotification) {
         if let _ = (notification.userInfo?[UIKeyboardFrameBeginUserInfoKey] as? NSValue)?.cgRectValue {
-            textFieldsBottomConstraint.constant -= 100
+            textFieldsBottomConstraint.constant = 8
             UIView.animate(withDuration: 0.3, animations: {
                 self.view.layoutIfNeeded()
             })

@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import SDWebImage
 
 class LeftViewController: UITableViewController {
 
@@ -43,6 +44,16 @@ class LeftViewController: UITableViewController {
         tableView.layer.addSublayer(border)
         tableView.layer.masksToBounds = true
         leftborderAdded = true
+        //User ui
+        let currentUser = UserManager.currentUserData
+        if let avatarURL = currentUser?.avatarURL {
+            profileImageView.sd_setImage(
+                with: URL(string: avatarURL),
+                placeholderImage: #imageLiteral(resourceName: "User")
+            )
+        }
+        profileNameLabel.text = currentUser?.name
+
     }
 
 }
