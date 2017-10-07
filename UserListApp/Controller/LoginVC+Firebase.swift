@@ -27,7 +27,11 @@ typealias LoginCompletion = (LoginResult) -> ()
 extension LoginViewController {
     
     func userDidSignedIn(user: User) {
-        performSegue(withIdentifier: Constants.userListSegueID, sender: nil)
+        if user.isEmailVerified {
+            performSegue(withIdentifier: Constants.SegueID.userListSegueID, sender: nil)
+        } else {
+            performSegue(withIdentifier: Constants.SegueID.showVerifySegueID, sender: nil)
+        }
     }
     
     //signup with email

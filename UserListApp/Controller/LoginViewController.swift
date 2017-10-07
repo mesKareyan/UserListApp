@@ -20,12 +20,17 @@ class LoginViewController: UIViewController {
     @IBOutlet weak var facebookLoginButtonContriner: UIView!
     @IBOutlet weak var usernameTextField: UITextField!
     @IBOutlet weak var passwordTextField: UITextField!
+    @IBOutlet weak var passwordConfirmTextFiled: UITextField!
+    
     var fbLoginButton: FBSDKLoginButton!
     @IBOutlet weak var loginModeSwitcherButton: UIButton!
     
     struct Constants {
         private init(){}
-        static let userListSegueID = "showUserList"
+        struct SegueID {
+            static let userListSegueID = "showUserList"
+            static let showVerifySegueID = "showVerify"
+        }
     }
     
     enum ControllerType {
@@ -54,6 +59,8 @@ class LoginViewController: UIViewController {
                     self.loginStackView.alpha = 1.0
                     self.loginStackView.transform = .identity
                     self.loginLabel.alpha = 1.0
+                    self.passwordConfirmTextFiled.isHidden =
+                        (self.controllerType == .signin)
                 }, completion: nil)
             }
             switch controllerType {
@@ -85,6 +92,19 @@ class LoginViewController: UIViewController {
         FBSDKLoginManager().logOut()
     }
     
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        super.prepare(for: segue, sender: sender)
+        guard let identifer = segue.identifier else {
+            return
+        }
+        if identifer == Constants.SegueID.showVerifySegueID {
+            let verifyController = segue.destination as! EmailVerifyViewController
+            verifyController.verifyComletion = {
+              self.controllerType = .signin
+            }
+        }
+    }
+    
     //MARK: - Initialization
     func configureUI() {
         loginButton.isEnabled = false
@@ -104,15 +124,20 @@ class LoginViewController: UIViewController {
         fbLoginButton.bottomAnchor.constraint(equalTo:
             container.bottomAnchor).isActive = true
         //counfigure Views
+        passwordConfirmTextFiled.isHidden = true
         [loginButton,
          facebookLoginButtonContriner,
          fbLoginButton,
          usernameTextField,
-         passwordTextField]
-            .forEach { view in
+         passwordTextField,
+         passwordConfirmTextFiled]
+            .forEach {  view in
                 guard let view = view else { return }
                 view.clipsToBounds = true
                 view.layer.cornerRadius = view.bounds.height / 2.0
+                if let textFiled = view as? UITextField {
+                    configureFiled(textFiled)
+                }
         }
         func configureFiled(_ textFiled: UITextField) {
             let image: UIImage
@@ -133,10 +158,7 @@ class LoginViewController: UIViewController {
             textFiled.leftView = leftImageView
             textFiled.leftViewMode = .always
             textFiled.backgroundColor = UIColor.white.withAlphaComponent(0.2)
-            
         }
-        configureFiled(usernameTextField)
-        configureFiled(passwordTextField)
         //Configure HUD
         APESuperHUD.appearance.backgroundBlurEffect = .light
         APESuperHUD.appearance.defaultDurationTime = 2.0
@@ -153,15 +175,14 @@ class LoginViewController: UIViewController {
         NotificationCenter.default.addObserver(self,
                                                selector: #selector(keyboardWillHide),
                                                name: .UIKeyboardWillHide, object: nil)
-        usernameTextField.addTarget(self,
-                                    action: #selector(textFieldDidChange(textField:)),
-                                    for: .editingChanged)
-        passwordTextField.addTarget(self,
-                                    action: #selector(textFieldDidChange(textField:)),
-                                    for: .editingChanged)
-        usernameTextField.delegate = self
-        passwordTextField.delegate = self
-        
+        [usernameTextField,
+         passwordConfirmTextFiled,
+         passwordTextField].forEach { textField in
+            textField?.addTarget(self,
+                                        action: #selector(textFieldDidChange(textField:)),
+                                        for: .editingChanged)
+            textField?.delegate = self
+        }
         view.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(endEditing)))
     }
     
@@ -232,7 +253,7 @@ extension LoginViewController: UITextFieldDelegate {
     }
     
     @objc func textFieldDidChange(textField: UITextField) {
-        loginButton.isEnabled = chekTextFields()
+        loginButton.isEnabled = checkTextFields()
     }
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
@@ -244,11 +265,26 @@ extension LoginViewController: UITextFieldDelegate {
         return true
     }
     
-    func chekTextFields() -> Bool {
+    func textFieldShouldClear(_ textField: UITextField) -> Bool {
+        if textField == passwordTextField {
+            passwordConfirmTextFiled.text = ""
+        }
+        return true
+    }
+    
+    func checkTextFields() -> Bool {
         guard let nameText = usernameTextField.text,
             let passwordText = passwordTextField.text
             else {
                 return false
+        }
+        if self.controllerType == .signup {
+            guard let passwordConfirmText = passwordConfirmTextFiled.text else {
+                return false
+            }
+            if  passwordConfirmText != passwordText {
+                return false
+            }
         }
         if passwordText.count < 6 || !nameText.isValidEmail() {
             return false

@@ -23,6 +23,7 @@
 		B24CDCB81F86ACF3009DEF44 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = B24CDCB71F86ACF3009DEF44 /* Constants.swift */; };
 		B25A09C91F879BDE0054A249 /* LeftViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B25A09C81F879BDE0054A249 /* LeftViewCell.swift */; };
 		B25A09CB1F879F680054A249 /* AboutViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B25A09CA1F879F680054A249 /* AboutViewController.swift */; };
+		B269B6E61F88CFB700137F31 /* EmailVerifyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B269B6E51F88CFB700137F31 /* EmailVerifyViewController.swift */; };
 		B27F7FEE1F86105100F76E9D /* UserListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B27F7FED1F86105100F76E9D /* UserListViewController.swift */; };
 		B27F7FF11F8619A700F76E9D /* UserTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B27F7FF01F8619A700F76E9D /* UserTableViewCell.swift */; };
 		B297FA791F86D1F0002E2A1F /* InterestsListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B297FA781F86D1F0002E2A1F /* InterestsListViewController.swift */; };
@@ -55,6 +56,7 @@
 		B24CDCB71F86ACF3009DEF44 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		B25A09C81F879BDE0054A249 /* LeftViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LeftViewCell.swift; sourceTree = "<group>"; };
 		B25A09CA1F879F680054A249 /* AboutViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AboutViewController.swift; sourceTree = "<group>"; };
+		B269B6E51F88CFB700137F31 /* EmailVerifyViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmailVerifyViewController.swift; sourceTree = "<group>"; };
 		B27F7FED1F86105100F76E9D /* UserListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserListViewController.swift; sourceTree = "<group>"; };
 		B27F7FF01F8619A700F76E9D /* UserTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserTableViewCell.swift; sourceTree = "<group>"; };
 		B297FA781F86D1F0002E2A1F /* InterestsListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InterestsListViewController.swift; sourceTree = "<group>"; };
@@ -173,6 +175,7 @@
 			children = (
 				B21F23A61F856968006CC65A /* LoginViewController.swift */,
 				B2BDA0A91F864A6D00E1B628 /* LoginVC+Firebase.swift */,
+				B269B6E51F88CFB700137F31 /* EmailVerifyViewController.swift */,
 				B2E39A781F8601CA00A0D691 /* LeftViewController.swift */,
 				B27F7FED1F86105100F76E9D /* UserListViewController.swift */,
 				B2BDA0A61F862B4100E1B628 /* ProfileViewController.swift */,
@@ -351,6 +354,7 @@
 				B25A09CB1F879F680054A249 /* AboutViewController.swift in Sources */,
 				B2E39A791F8601CA00A0D691 /* LeftViewController.swift in Sources */,
 				B21C58711F8765E100C9ED4B /* UserManager.swift in Sources */,
+				B269B6E61F88CFB700137F31 /* EmailVerifyViewController.swift in Sources */,
 				B21F23A71F856968006CC65A /* LoginViewController.swift in Sources */,
 				B24CDCB61F868B44009DEF44 /* FirebaseDatabaseManager.swift in Sources */,
 				B24CA4FB1F8800FB00D5D74B /* FirebaseStorageManager.swift in Sources */,
