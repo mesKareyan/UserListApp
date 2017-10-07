@@ -16,13 +16,12 @@ class UserManager {
     
     static func create(user firebaseUser: Firebase.User, new: Bool) {
         currentUserData = UserData(fireBaseUser: firebaseUser)
-        currentUserData.getInterests()
+        //currentUserData.getInterests()
         if new {
             FirebaseDatabaseManager.shared.usersListAdd(user: currentUserData)
         }
     }
     
-    //update
     static func updateUser(name: String) {
         let changeRequest = currentUserData.fireBaseUser.createProfileChangeRequest()
         changeRequest.displayName = name
@@ -36,18 +35,21 @@ class UserManager {
                 ])
         }
     }
+    
     static func updateUser(age: Int) {
         currentUserData.age = age
         currentUserData.databaseUserRef.updateChildValues([
             "age": age
             ])
     }
+    
     static func updateUser(interests: [String]) {
         currentUserData.interests = interests
         currentUserData.databaseUserRef.updateChildValues([
             DatabaseReferencePath.interests: interests
             ])
     }
+    
     static func updateUser(image: UIImage, completion: @escaping () -> ()) {
         guard let data = UIImagePNGRepresentation(image) else {
             return
@@ -60,11 +62,12 @@ class UserManager {
                 case .failure(with: let error):
                     print(error.localizedDescription)
                 case .success(URL: let imageURL):
-                   updateUser(imageURL: imageURL)
+                    updateUser(imageURL: imageURL)
                 }
                 completion()
         }
     }
+    
     private static func updateUser(imageURL: URL) {
         let changeRequest = currentUserData.fireBaseUser.createProfileChangeRequest()
         changeRequest.photoURL = imageURL
@@ -78,6 +81,31 @@ class UserManager {
                 ])
             NotificationCenter.default.post(name: .ulapp_userImageChanged, object: nil)
         }
+    }
+    
+    static func updateUser(signatureImage: UIImage, completion: @escaping () -> ()) {
+        guard let data = UIImagePNGRepresentation(signatureImage) else {
+            return
+        }
+        FirebaseStorageManager
+            .uploadImage(withData: data,
+                         name: currentUserData.id + "+signature")
+            { result in
+                switch result {
+                case .failure(with: let error):
+                    print(error.localizedDescription)
+                case .success(URL: let imageURL):
+                    updateUser(signatureURL: imageURL)
+                }
+                completion()
+        }
+    }
+    
+    private static func updateUser(signatureURL: URL) {
+            currentUserData.signatureURL = signatureURL.absoluteString
+            currentUserData.databaseUserRef.updateChildValues([
+                "signature": signatureURL.absoluteString
+                ])
     }
     
 }

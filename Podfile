@@ -14,4 +14,6 @@ target 'UserListApp' do
     pod 'FBSDKCoreKit'
     pod 'FBSDKLoginKit'
 
+    pod 'ACEDrawingView'
+
 end

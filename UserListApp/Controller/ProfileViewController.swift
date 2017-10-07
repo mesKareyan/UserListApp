@@ -34,8 +34,10 @@ class ProfileViewController: UITableViewController {
         let list = Set(user.interests)
         return list
     }()
+
     var isEditable: Bool!
     private var isImageChanged = false
+    private var isSignatureChanged = false
     private var isAgePickerVisible = false
 
     private func toggleShowPicker () {
@@ -109,6 +111,12 @@ class ProfileViewController: UITableViewController {
                 placeholderImage: #imageLiteral(resourceName: "User")
             )
         }
+        if let signatureURL = user.signatureURL {
+            signatureImageView.sd_setImage(
+                with: URL(string: signatureURL),
+                placeholderImage: nil
+            )
+        }
         nameTextField.text = user.name
         emailTextField.text = user.email
         if let userAge = user.age {
@@ -117,6 +125,7 @@ class ProfileViewController: UITableViewController {
         if let age = user.age {
             agePickerView.selectedRow(inComponent: age + 16)
         }
+        
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -149,6 +158,10 @@ class ProfileViewController: UITableViewController {
     }
     @IBAction func agePickerDoneButtonTapped(_ sender: UIButton) {
         toggleShowPicker()
+    }
+    
+    @IBOutlet weak var signatureImageView: UIImageView!
+    @IBAction func signatureButtonTapped(_ sender: UIButton) {
     }
     
 }
@@ -210,6 +223,10 @@ extension ProfileViewController: UITextFieldDelegate {
         //change image if needed
         if isImageChanged, let image = userImageView.image {
             UserManager.updateUser(image: image) {
+            }
+        }
+        if isSignatureChanged, let image = signatureImageView.image {
+            UserManager.updateUser(signatureImage: image) {
             }
         }
         //change interest if needed
@@ -283,6 +300,12 @@ extension ProfileViewController: UIImagePickerControllerDelegate, UINavigationCo
     
     func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
         dismiss(animated: true, completion: nil)
+    }
+    
+    @IBAction func unwindFromSignature(segue: UIStoryboardSegue) {
+        let signatureController = segue.source as! SignarureDrawingController
+        self.signatureImageView.image = signatureController.drawingView.image
+        self.isSignatureChanged = true
     }
     
 }

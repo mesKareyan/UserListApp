@@ -83,6 +83,7 @@ class LoginViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         self.textFieldsBottomConstraint.constant = 8
+        FBSDKLoginManager().logOut()
     }
     
 //MARK: - Initialization

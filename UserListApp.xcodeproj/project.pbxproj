@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		0F353901799221FAE24EFF28 /* Pods_UserListApp.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 76F41F991CE0262A59D81E77 /* Pods_UserListApp.framework */; };
+		B21650681F88556700A03F28 /* SignarureDrawingController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B21650671F88556700A03F28 /* SignarureDrawingController.swift */; };
 		B21C586E1F8763A600C9ED4B /* UserData.swift in Sources */ = {isa = PBXBuildFile; fileRef = B21C586D1F8763A600C9ED4B /* UserData.swift */; };
 		B21C58711F8765E100C9ED4B /* UserManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B21C58701F8765E100C9ED4B /* UserManager.swift */; };
 		B21F23A51F856968006CC65A /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B21F23A41F856968006CC65A /* AppDelegate.swift */; };
@@ -36,6 +37,7 @@
 		76F41F991CE0262A59D81E77 /* Pods_UserListApp.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_UserListApp.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		99CBDFB79EAF34AA38C5661C /* Pods-UserListApp.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-UserListApp.debug.xcconfig"; path = "Pods/Target Support Files/Pods-UserListApp/Pods-UserListApp.debug.xcconfig"; sourceTree = "<group>"; };
 		AF0C6AC0F5C310DCAB557ED8 /* Pods-UserListApp.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-UserListApp.release.xcconfig"; path = "Pods/Target Support Files/Pods-UserListApp/Pods-UserListApp.release.xcconfig"; sourceTree = "<group>"; };
+		B21650671F88556700A03F28 /* SignarureDrawingController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignarureDrawingController.swift; sourceTree = "<group>"; };
 		B21C586D1F8763A600C9ED4B /* UserData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserData.swift; sourceTree = "<group>"; };
 		B21C58701F8765E100C9ED4B /* UserManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserManager.swift; sourceTree = "<group>"; };
 		B21F23A11F856968006CC65A /* UserListApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = UserListApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -176,6 +178,7 @@
 				B2BDA0A61F862B4100E1B628 /* ProfileViewController.swift */,
 				B297FA781F86D1F0002E2A1F /* InterestsListViewController.swift */,
 				B25A09CA1F879F680054A249 /* AboutViewController.swift */,
+				B21650671F88556700A03F28 /* SignarureDrawingController.swift */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -308,6 +311,7 @@
 			);
 			inputPaths = (
 				"${SRCROOT}/Pods/Target Support Files/Pods-UserListApp/Pods-UserListApp-frameworks.sh",
+				"${BUILT_PRODUCTS_DIR}/ACEDrawingView/ACEDrawingView.framework",
 				"${BUILT_PRODUCTS_DIR}/APESuperHUD/APESuperHUD.framework",
 				"${BUILT_PRODUCTS_DIR}/Bolts/Bolts.framework",
 				"${BUILT_PRODUCTS_DIR}/FBSDKCoreKit/FBSDKCoreKit.framework",
@@ -319,6 +323,7 @@
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ACEDrawingView.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/APESuperHUD.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Bolts.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FBSDKCoreKit.framework",
@@ -350,6 +355,7 @@
 				B24CDCB61F868B44009DEF44 /* FirebaseDatabaseManager.swift in Sources */,
 				B24CA4FB1F8800FB00D5D74B /* FirebaseStorageManager.swift in Sources */,
 				B21F23A51F856968006CC65A /* AppDelegate.swift in Sources */,
+				B21650681F88556700A03F28 /* SignarureDrawingController.swift in Sources */,
 				B21C586E1F8763A600C9ED4B /* UserData.swift in Sources */,
 				B24CDCB81F86ACF3009DEF44 /* Constants.swift in Sources */,
 				B27F7FF11F8619A700F76E9D /* UserTableViewCell.swift in Sources */,

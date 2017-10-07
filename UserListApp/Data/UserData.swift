@@ -12,12 +12,13 @@ import Firebase
 
 class UserData {
     
-    let id:     String
-    let email:  String?
-    var name:   String?
-    var age:    Int?
-    var avatarURL: String?
-    var interests: [String]!
+    let id:           String
+    let email:        String?
+    var name:         String?
+    var age:          Int?
+    var avatarURL:    String?
+    var signatureURL: String?
+    var interests:    [String]!
     
     var databaseUserRef: DatabaseReference!
     var fireBaseUser: User!
@@ -30,6 +31,8 @@ class UserData {
         self.fireBaseUser   = fireBaseUser
         self.databaseUserRef = FirebaseDatabaseManager.shared
             .usersReference.child(fireBaseUser.uid)
+        getInterests()
+        getSignatureURL()
     }
     
     func getInterests() {
@@ -39,6 +42,15 @@ class UserData {
                     self.interests  = values
                 }
             })
+    }
+    
+    func getSignatureURL() {
+        self.databaseUserRef.child("signature")
+            .observe(.value) { snapshot in
+                if let urlString = snapshot.value as? String {
+                    self.signatureURL = urlString
+                }
+        }
     }
     
     init(snapshot: DataSnapshot) {
