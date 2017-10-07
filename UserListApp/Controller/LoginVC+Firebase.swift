@@ -85,7 +85,6 @@ extension LoginViewController {
 extension LoginViewController: FBSDKLoginButtonDelegate {
     
     func loginButtonDidLogOut(_ loginButton: FBSDKLoginButton!) {
-        
     }
     
     func loginButton(_ loginButton: FBSDKLoginButton!,
@@ -100,9 +99,7 @@ extension LoginViewController: FBSDKLoginButtonDelegate {
         APESuperHUD.showOrUpdateHUD(loadingIndicator: .standard,
                                     funnyMessagesLanguage: .english,
                                     presentingView: view)
-    
         getFacebookData { result in
-            
             switch result {
             case .failure(with: let error):
                 self.showError(error)

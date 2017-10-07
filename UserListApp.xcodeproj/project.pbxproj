@@ -132,7 +132,6 @@
 				B2E39A771F86019C00A0D691 /* Controller */,
 				B21F23A41F856968006CC65A /* AppDelegate.swift */,
 				B21F23A81F856968006CC65A /* Main.storyboard */,
-				B21F23AB1F856968006CC65A /* Assets.xcassets */,
 				B21F23AD1F856968006CC65A /* LaunchScreen.storyboard */,
 				B21F23B01F856968006CC65A /* Info.plist */,
 				B2BDA0A81F8644FC00E1B628 /* GoogleService-Info.plist */,
@@ -143,6 +142,7 @@
 		B21F23B61F856976006CC65A /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				B21F23AB1F856968006CC65A /* Assets.xcassets */,
 				B21F23B91F856BCD006CC65A /* orangeButton.png */,
 				B21F23B71F856989006CC65A /* Background.png */,
 			);

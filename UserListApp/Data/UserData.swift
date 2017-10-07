@@ -35,6 +35,37 @@ class UserData {
         getSignatureURL()
     }
     
+    init(snapshot: DataSnapshot) {
+        let snapshotValue = snapshot.value as! NSDictionary
+        self.id = "unknown"
+        if let age = snapshotValue["age"] as? Int {
+            self.age = age
+        }
+        if let avatarURL = snapshotValue["avatar"] as? String {
+            self.avatarURL = avatarURL
+        }
+        if let signatureURL = snapshotValue["signature"] as? String {
+            self.signatureURL = signatureURL
+        }
+        if let email = snapshotValue["email"] as? String {
+            self.email = email
+        } else {
+            self.email = "unknown"
+        }
+        if let name = snapshotValue["name"] as? String {
+            self.name = name
+        }
+        if snapshot.hasChild(DatabaseReferencePath.interests) {
+            if  let interestsSnapValue = snapshot.childSnapshot(
+                forPath: DatabaseReferencePath.interests).value as? NSArray {
+                let interests = interestsSnapValue as! [String]
+                self.interests = interests
+            }
+        }
+        self.databaseUserRef = snapshot.ref
+    }
+    
+    //MARK: Utils
     func getInterests() {
         self.databaseUserRef.child(DatabaseReferencePath.interests)
             .observeSingleEvent(of: .value, with: { snapshot in
@@ -51,33 +82,6 @@ class UserData {
                     self.signatureURL = urlString
                 }
         }
-    }
-    
-    init(snapshot: DataSnapshot) {
-        let snapshotValue = snapshot.value as! NSDictionary
-        self.id = "unknown"
-        if let age = snapshotValue["age"] as? Int {
-            self.age = age
-        }
-        if let avatar = snapshotValue["avatar"] as? String {
-            self.avatarURL = avatar
-        }
-        if let email = snapshotValue["email"] as? String {
-            self.email = email
-        } else {
-            self.email = "unknown"
-        }
-        if let name = snapshotValue["name"] as? String {
-            self.name = name
-        }
-        if snapshot.hasChild("interests") {
-            if  let interestsSnapValue = snapshot.childSnapshot(
-                forPath: "interests").value as? NSDictionary {
-                let interests = interestsSnapValue.allKeys as! [String]
-                self.interests = interests
-            }
-        }
-        self.databaseUserRef = snapshot.ref
     }
     
     var dictRepresentation: Dictionary<String, Any> {

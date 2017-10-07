@@ -24,6 +24,7 @@ class LoginViewController: UIViewController {
     @IBOutlet weak var loginModeSwitcherButton: UIButton!
     
     struct Constants {
+        private init(){}
         static let userListSegueID = "showUserList"
     }
     
@@ -45,11 +46,9 @@ class LoginViewController: UIViewController {
             self.loginLabel.alpha = 0.0
             UIView.animate(withDuration: 0.4, animations: {
                 self.loginStackView.alpha = 0.0
-                self.loginStackView.transform =
-                    CGAffineTransform(scaleX: 1.0, y: 0.1)
-                        .concatenating(
-                            CGAffineTransform(translationX: 0.0,
-                                              y: self.loginStackView.bounds.height))
+                self.loginStackView.transform = CGAffineTransform(scaleX: 1.0,y: 0.1)
+                    .concatenating(CGAffineTransform(translationX: 0.0,
+                                                     y: self.loginStackView.bounds.height))
             }) { fin  in
                 UIView.animate(withDuration: 0.4, animations: {
                     self.loginStackView.alpha = 1.0
@@ -86,7 +85,7 @@ class LoginViewController: UIViewController {
         FBSDKLoginManager().logOut()
     }
     
-//MARK: - Initialization
+    //MARK: - Initialization
     func configureUI() {
         loginButton.isEnabled = false
         //facebook login button
@@ -162,7 +161,7 @@ class LoginViewController: UIViewController {
                                     for: .editingChanged)
         usernameTextField.delegate = self
         passwordTextField.delegate = self
-    
+        
         view.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(endEditing)))
     }
     
@@ -203,7 +202,7 @@ class LoginViewController: UIViewController {
         }
     }
     
-     func showError(_ error: Error) {
+    func showError(_ error: Error) {
         APESuperHUD.showOrUpdateHUD(icon: .sadFace,
                                     message: "Can't login \n" + error.localizedDescription,
                                     presentingView: self.view)
@@ -216,7 +215,7 @@ extension LoginViewController: UITextFieldDelegate {
     
     @objc func keyboardWillShow(notification: NSNotification) {
         if let _ = (notification.userInfo?[UIKeyboardFrameBeginUserInfoKey] as? NSValue)?.cgRectValue {
-           textFieldsBottomConstraint.constant = 110
+            textFieldsBottomConstraint.constant = 110
             UIView.animate(withDuration: 0.3, animations: {
                 self.view.layoutIfNeeded()
             })
@@ -233,7 +232,7 @@ extension LoginViewController: UITextFieldDelegate {
     }
     
     @objc func textFieldDidChange(textField: UITextField) {
-       loginButton.isEnabled = chekTextFields()
+        loginButton.isEnabled = chekTextFields()
     }
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
@@ -247,9 +246,9 @@ extension LoginViewController: UITextFieldDelegate {
     
     func chekTextFields() -> Bool {
         guard let nameText = usernameTextField.text,
-                let passwordText = passwordTextField.text
-        else {
-            return false
+            let passwordText = passwordTextField.text
+            else {
+                return false
         }
         if passwordText.count < 6 || !nameText.isValidEmail() {
             return false

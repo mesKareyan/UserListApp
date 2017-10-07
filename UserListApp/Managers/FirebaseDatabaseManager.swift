@@ -54,21 +54,4 @@ class FirebaseDatabaseManager {
         }
     }
     
-    func getInterestsList(completion: @escaping RequestCompletion) {
-        dbReference
-            .child(DatabaseReferencePath.interests)
-            .observeSingleEvent(of: .value, with: { snapshot in
-                if let value = snapshot.value {
-                        completion(.success(user: value))
-                } else {
-                        completion(.failure(with: RequestError.unknown))
-                }
-                    
-            })
-            { error in
-                completion(.failure(with: error))
-        }
-    }
-    
-    
 }

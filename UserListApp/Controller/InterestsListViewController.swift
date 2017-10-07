@@ -15,6 +15,11 @@ class InterestsListViewController: UITableViewController {
     var selectedInterests: Set<String>!
     weak var profileController: ProfileViewController!
     
+    struct Constants {
+        private init(){}
+       static let interestsCellId = "interestsCell"
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         interestsRef
@@ -51,7 +56,7 @@ class InterestsListViewController: UITableViewController {
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "interestsCell")!
+        let cell = tableView.dequeueReusableCell(withIdentifier: Constants.interestsCellId)!
         cell.textLabel?.text = interests[indexPath.row]
         cell.accessoryType = selectedInterests.contains(cell.textLabel!.text!) ?
                             .checkmark : .none

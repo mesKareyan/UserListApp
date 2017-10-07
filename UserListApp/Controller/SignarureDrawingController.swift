@@ -24,5 +24,4 @@ class SignarureDrawingController: UIViewController {
         dismiss(animated: true, completion: nil)
     }
 
-    
 }

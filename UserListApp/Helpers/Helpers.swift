@@ -25,6 +25,7 @@ extension UIColor {
     static var appDardBlue: UIColor {
         return color(red: 74, green: 135, blue: 237)
     }
+    
 }
 
 extension String {

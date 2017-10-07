@@ -346,6 +346,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="603"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
+                        <inset key="separatorInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                         <view key="tableHeaderView" contentMode="scaleToFill" id="slO-D3-06B">
                             <rect key="frame" x="0.0" y="0.0" width="375" height="120"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -608,6 +609,7 @@
                                                 <constraint firstAttribute="trailing" secondItem="ucE-Yh-8Ga" secondAttribute="trailing" constant="-20" id="rDN-an-3O5"/>
                                             </constraints>
                                         </tableViewCellContentView>
+                                        <inset key="separatorInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                                     </tableViewCell>
                                 </cells>
                             </tableViewSection>
@@ -651,10 +653,13 @@
                     <connections>
                         <outlet property="agePickerView" destination="rjg-4c-Gbu" id="C3e-45-bSc"/>
                         <outlet property="ageTextField" destination="OOg-Pa-Q9J" id="VU8-BA-ehk"/>
+                        <outlet property="cameraButton" destination="53b-QV-BpH" id="6Sw-gv-KQM"/>
                         <outlet property="emailTextField" destination="Ikt-al-sI7" id="dBC-Xr-VYa"/>
+                        <outlet property="galleryButton" destination="Xmd-ay-3WZ" id="qI4-UA-08W"/>
                         <outlet property="interestChangeButton" destination="ucE-Yh-8Ga" id="j6m-qh-N5b"/>
                         <outlet property="interestsTextView" destination="EFk-tN-r76" id="alk-ll-60f"/>
                         <outlet property="nameTextField" destination="rd0-a5-VtL" id="IRf-QP-aoB"/>
+                        <outlet property="signatureButton" destination="sfK-b1-1ND" id="7Nq-b7-Jsw"/>
                         <outlet property="signatureImageView" destination="vxt-cg-fnZ" id="bRJ-TU-WjV"/>
                         <outlet property="userImageView" destination="tij-Wg-oxw" id="28s-Eq-6gs"/>
                     </connections>
@@ -752,7 +757,6 @@
                                         <state key="normal" title="Cancel"/>
                                         <connections>
                                             <action selector="cancelButtonTapped:" destination="lkE-aE-hrm" eventType="touchUpInside" id="ntk-tO-Jfm"/>
-                                            <action selector="unwind2WithSegure:" destination="lkE-aE-hrm" eventType="touchUpInside" id="8Ha-wA-sLf"/>
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="vCI-Qj-i5Q">

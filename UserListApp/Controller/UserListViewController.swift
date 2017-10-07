@@ -20,8 +20,10 @@ class UserListViewController: UIViewController {
     var users: [UserData] = []
     
     struct Constants {
+        private init(){}
         static let cellID = "userCell"
         struct SegueID {
+            private init(){}
             static let leftView = "leftView"
             static let showUserProfile = "showUserProfile"
         }
@@ -39,6 +41,14 @@ class UserListViewController: UIViewController {
             self.users = usersList
             self.tableView.reloadData()
         })
+        let tap = UITapGestureRecognizer(target: self,
+                                        action: #selector(hideLeftView(recognizer:)))
+        tap.delegate = self
+        view.addGestureRecognizer(tap)
+    }
+    
+    @objc func hideLeftView(recognizer: UITapGestureRecognizer) {
+        hideLeftView()
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -59,7 +69,6 @@ class UserListViewController: UIViewController {
         default:
             break
         }
-        
     }
     
     func congigureUI() {
@@ -92,8 +101,8 @@ class UserListViewController: UIViewController {
         case .cancelled, .failed, .ended:
             //hide left view if needed
             if xConstant < -50 {
-                xConstant =  -leftView.bounds.width
-                animationDuration = 0.3
+                hideLeftView()
+                return
             } else {
                  xConstant = 0
                 animationDuration = 0.2
@@ -102,9 +111,16 @@ class UserListViewController: UIViewController {
             break
         }
         leftViewLeftConstraint.constant = xConstant
-        UIView.animate(withDuration: animationDuration) {
+        UIView.animate(withDuration: animationDuration, delay: 0.0, options: .curveEaseOut, animations: {
             self.view.layoutIfNeeded()
-        }
+        }, completion: nil)
+    }
+    
+    private func hideLeftView(){
+        leftViewLeftConstraint.constant = -leftView.bounds.width
+        UIView.animate(withDuration: 0.4, delay: 0.0, options: .curveEaseOut, animations: {
+            self.view.layoutIfNeeded()
+        }, completion: nil)
     }
 }
 
@@ -137,15 +153,12 @@ extension UserListViewController: UITableViewDelegate {
 extension UserListViewController: LeftViewDelegate {
     
     func profileRowTapped() {
-        
     }
     
     func feedbackRowTapped() {
-        
     }
     
     func infoRowTapped() {
-        
     }
     
     func signOutRowTapped() {
@@ -164,5 +177,22 @@ extension UserListViewController: LeftViewDelegate {
        
     }
     
-    
 }
+
+extension UserListViewController: UIGestureRecognizerDelegate {
+    func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldReceive touch: UITouch) -> Bool {
+        if let touchView = touch.view,
+            touchView.isDescendant(of: leftView) {
+            return false
+        }
+        return true
+    }
+}
+
+
+
+
+
+
+
+

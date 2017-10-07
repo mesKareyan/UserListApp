@@ -12,13 +12,12 @@ class UserTableViewCell: UITableViewCell {
 
     @IBOutlet weak var userNameLabel: UILabel!
     @IBOutlet weak var userImageView: UIImageView!
+    @IBOutlet weak var cardViewbackground: UIView!
     var userData: UserData! {
         didSet {
             updateUI()
         }
     }
-    
-    @IBOutlet weak var cardViewbackground: UIView!
     
     override func awakeFromNib() {
         super.awakeFromNib()

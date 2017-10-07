@@ -23,14 +23,16 @@ protocol LeftViewDelegate: class {
 class LeftViewController: UITableViewController {
     
     struct Constants {
+        private init(){}
         struct Segure {
+            private init(){}
             static let showProfile = "showProfile"
         }
     }
-
+    
     private var leftborderAdded = false
     weak var leftViewDelegate: LeftViewDelegate!
-
+    
     @IBOutlet weak var profileImageView: UIImageView!
     @IBOutlet weak var profileNameLabel: UILabel!
     
@@ -41,14 +43,13 @@ class LeftViewController: UITableViewController {
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         counfigureUI()
-        NotificationCenter.default.addObserver(forName: .ulapp_userImageChanged, object: nil, queue: .main) { notif in
-            let user = UserManager.currentUserData
-            if let avatarURL = user?.avatarURL {
-                self.profileImageView.sd_setImage(
-                    with: URL(string: avatarURL),
-                    placeholderImage: #imageLiteral(resourceName: "User")
-                )
-            }
+        NotificationCenter.default.addObserver(forName: .ulapp_userImageChanged,
+                                               object: nil,
+                                               queue: .main) { notif in
+                                                let user = UserManager.currentUserData
+                                                if let avatarURL = user?.avatarURL {
+                                                    self.profileImageView.sd_setImage(with: URL(string: avatarURL),placeholderImage: #imageLiteral(resourceName: "User"))
+                                                }
         }
     }
     
@@ -84,7 +85,6 @@ class LeftViewController: UITableViewController {
             )
         }
         profileNameLabel.text = currentUser?.name
-
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -101,7 +101,7 @@ class LeftViewController: UITableViewController {
             break
         }
     }
-
+    
 }
 
 // MARK: - TableView Delegate
@@ -136,7 +136,6 @@ extension LeftViewController: MFMailComposeViewControllerDelegate {
     }
     
     func configuredMailComposeViewController() -> MFMailComposeViewController {
-       
         let mailComposerVC = MFMailComposeViewController()
         let emailAdress = UserManager.currentUserData.email!
         mailComposerVC.mailComposeDelegate = self
@@ -156,4 +155,5 @@ extension LeftViewController: MFMailComposeViewControllerDelegate {
     func mailComposeController(_ controller: MFMailComposeViewController, didFinishWith result: MFMailComposeResult, error: Error?) {
         controller.dismiss(animated: true, completion: nil)
     }
+    
 }

@@ -54,5 +54,4 @@ class FirebaseStorageManager {
         uploadTask.resume()
     }
     
-    
 }

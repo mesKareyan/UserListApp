@@ -13,18 +13,36 @@ import SDWebImage
 class ProfileViewController: UITableViewController {
     
     struct Constants {
+        private init(){}
         struct SegueID {
+            private init(){}
             static let showInterests = "showInterests"
         }
     }
     
     @IBOutlet weak var userImageView: UIImageView!
+    @IBOutlet weak var signatureImageView: UIImageView!
     @IBOutlet weak var nameTextField: UITextField!
     @IBOutlet weak var emailTextField: UITextField!
     @IBOutlet weak var ageTextField: UITextField!
     @IBOutlet weak var interestsTextView: UITextView!
+    @IBOutlet weak var cameraButton: UIButton!
+    @IBOutlet weak var galleryButton: UIButton!
+    @IBOutlet weak var signatureButton: UIButton!
     @IBOutlet weak var interestChangeButton: UIButton!
     @IBOutlet weak var agePickerView: UIPickerView!
+    
+    lazy var imagePicker: UIImagePickerController = {
+        let picker = UIImagePickerController()
+        picker.delegate = self
+        return picker
+    }()
+    private func toggleShowPicker () {
+        isAgePickerVisible = !isAgePickerVisible
+        agePickerView.isHidden = !isAgePickerVisible
+        tableView.beginUpdates()
+        tableView.endUpdates()
+    }
     
     var user: UserData!
     lazy var selectedInterests: Set<String> = {
@@ -40,27 +58,18 @@ class ProfileViewController: UITableViewController {
     private var isSignatureChanged = false
     private var isAgePickerVisible = false
 
-    private func toggleShowPicker () {
-        isAgePickerVisible = !isAgePickerVisible
-        agePickerView.isHidden = !isAgePickerVisible
-        tableView.beginUpdates()
-        tableView.endUpdates()
-    }
-    
+    //nav bar state
     var navBarImage: UIImage!
     var navBarShadowImge: UIImage!
     var navBarIsTranslucent: Bool!
-    lazy var imagePicker: UIImagePickerController = {
-        let picker = UIImagePickerController()
-        picker.delegate = self
-        return picker
-    }()
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
         configureUI()
         addActions()
-        NotificationCenter.default.addObserver(forName: .ulapp_userImageChanged, object: nil, queue: .main) { notif in
+        NotificationCenter.default.addObserver(forName: .ulapp_userImageChanged,
+                                               object: nil,
+                                               queue: .main) { notif in
             if let avatarURL = self.user.avatarURL {
                 self.userImageView.sd_setImage(
                     with: URL(string: avatarURL),
@@ -103,7 +112,13 @@ class ProfileViewController: UITableViewController {
             $0?.isEnabled = self.isEditable
         }
         interestsTextView.isEditable = self.isEditable
-        interestChangeButton.isHidden = !self.isEditable
+        [interestChangeButton,
+         cameraButton,
+         galleryButton,
+         signatureButton].forEach {  $0?.isHidden = !self.isEditable }
+        if !isEditable {
+            navigationItem.rightBarButtonItems = nil
+        }
         //configure user data
         if let avatarURL = user.avatarURL {
             userImageView.sd_setImage(
@@ -125,7 +140,6 @@ class ProfileViewController: UITableViewController {
         if let age = user.age {
             agePickerView.selectedRow(inComponent: age + 16)
         }
-        
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -160,7 +174,6 @@ class ProfileViewController: UITableViewController {
         toggleShowPicker()
     }
     
-    @IBOutlet weak var signatureImageView: UIImageView!
     @IBAction func signatureButtonTapped(_ sender: UIButton) {
     }
     
@@ -198,10 +211,6 @@ extension ProfileViewController: UIPickerViewDelegate, UIPickerViewDataSource {
         ageTextField.text = String(row + 16)
     }
     
-//    private func pickerShowChanged () {
-//        ageTextField.text = "agePickerView.compone"
-//    }
-    
 }
 
 // MARK: - Text Fileds
@@ -234,7 +243,6 @@ extension ProfileViewController: UITextFieldDelegate {
     }
     
     func addActions() {
-        
         ageTextField.addTarget(self,
                                action: #selector(textFieldDidChange(textField:)),
                                for: .editingChanged)
