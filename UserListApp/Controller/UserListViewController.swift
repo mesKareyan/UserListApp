@@ -44,7 +44,6 @@ class UserListViewController: UIViewController {
         let tap = UITapGestureRecognizer(target: self,
                                         action: #selector(hideLeftView(recognizer:)))
         tap.delegate = self
-        view.addGestureRecognizer(tap)
     }
     
     @objc func hideLeftView(recognizer: UITapGestureRecognizer) {
