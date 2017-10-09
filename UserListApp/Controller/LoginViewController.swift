@@ -81,10 +81,18 @@ class LoginViewController: UIViewController {
         configureUI()
         addActions()
         if let user = Auth.auth().currentUser {
-            userDidSignedIn(user: user)
-            return
-        }        
+            APESuperHUD.showOrUpdateHUD(loadingIndicator: .standard, message: "", presentingView: self.view)
+            UserManager.fetch(user: user) {
+                DispatchQueue.main.async {
+                    APESuperHUD.removeHUD(animated: true, presentingView: self.view)
+                    if UserManager.currentUserData.isFacebookUser || user.isEmailVerified {
+                        self.performSegue(withIdentifier: Constants.SegueID.userListSegueID, sender: nil)
+                    }
+                }
+            }
+        }
     }
+    
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -100,7 +108,7 @@ class LoginViewController: UIViewController {
         if identifer == Constants.SegueID.showVerifySegueID {
             let verifyController = segue.destination as! EmailVerifyViewController
             verifyController.verifyComletion = {
-              self.controllerType = .signin
+                self.controllerType = .signin
             }
         }
     }
@@ -179,8 +187,8 @@ class LoginViewController: UIViewController {
          passwordConfirmTextFiled,
          passwordTextField].forEach { textField in
             textField?.addTarget(self,
-                                        action: #selector(textFieldDidChange(textField:)),
-                                        for: .editingChanged)
+                                 action: #selector(textFieldDidChange(textField:)),
+                                 for: .editingChanged)
             textField?.delegate = self
         }
         view.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(endEditing)))
@@ -203,25 +211,37 @@ class LoginViewController: UIViewController {
         switch controllerType {
         case .signin:
             signin { result in
-                self.loginComplited(with: result)
+                self.signInComplited(with: result)
             }
         case .signup:
             signup { result in
-                self.loginComplited(with: result)
+                self.signUpComplited(with: result)
             }
         }
     }
     
-    func loginComplited(with result: LoginResult) {
+    func signInComplited(with result: LoginResult) {
         self.view.isUserInteractionEnabled = true
         switch result {
         case .failure(with: let error):
             showError(error)
         case .success(user: let user):
             APESuperHUD.removeHUD(animated: true, presentingView: self.view)
-            userDidSignedIn(user: user)
+            userDidSignedIn(user: user, isFacebookUser: false)
         }
     }
+    
+    func signUpComplited(with result: LoginResult) {
+        self.view.isUserInteractionEnabled = true
+        switch result {
+        case .failure(with: let error):
+            showError(error)
+        case .success(user: let user):
+            APESuperHUD.removeHUD(animated: true, presentingView: self.view)
+            userDidSignedUp(user: user, isFacebookUser: false)
+        }
+    }
+    
     
     func showError(_ error: Error) {
         APESuperHUD.showOrUpdateHUD(icon: .sadFace,

@@ -20,10 +20,16 @@ class UserData {
     var signatureURL: String?
     var interests:    [String]!
     
+    var provider:     String?
+    var isFacebookUser: Bool {
+        return provider == "facebook"
+    }
+    
     var databaseUserRef: DatabaseReference!
     var fireBaseUser: User!
     
     init(fireBaseUser: Firebase.User) {
+        //get data from firebase Auth
         self.email     = fireBaseUser.email
         self.name      = fireBaseUser.displayName
         self.avatarURL = fireBaseUser.photoURL?.absoluteString
@@ -31,13 +37,15 @@ class UserData {
         self.fireBaseUser   = fireBaseUser
         self.databaseUserRef = FirebaseDatabaseManager.shared
             .usersReference.child(fireBaseUser.uid)
-        getInterests()
-        getSignatureURL()
     }
     
     init(snapshot: DataSnapshot) {
         let snapshotValue = snapshot.value as! NSDictionary
         self.id = "unknown"
+        self.provider = "unknown"
+        if let provider = snapshotValue["provider"] as? String {
+            self.provider = provider 
+        }
         if let age = snapshotValue["age"] as? Int {
             self.age = age
         }
@@ -66,6 +74,16 @@ class UserData {
     }
     
     //MARK: Utils
+    func getProvider(comletion: @escaping () -> ()) {
+        self.databaseUserRef.child(DatabaseReferencePath.provider)
+            .observeSingleEvent(of: .value, with: { snapshot in
+                if let provider = snapshot.value as? String {
+                    self.provider  = provider
+                }
+                comletion()
+            })
+    }
+    
     func getInterests() {
         self.databaseUserRef.child(DatabaseReferencePath.interests)
             .observeSingleEvent(of: .value, with: { snapshot in
@@ -97,6 +115,9 @@ class UserData {
         }
         if let avatar = avatarURL {
             dict["avatar"] = avatar
+        }
+        if let provider = provider {
+            dict["provider"] = provider
         }
         dict["intersts"] = self.interests
         return dict

@@ -26,11 +26,26 @@ typealias LoginCompletion = (LoginResult) -> ()
 //MARK: Firebase login
 extension LoginViewController {
     
-    func userDidSignedIn(user: User) {
-        if user.isEmailVerified {
-            performSegue(withIdentifier: Constants.SegueID.userListSegueID, sender: nil)
-        } else {
-            performSegue(withIdentifier: Constants.SegueID.showVerifySegueID, sender: nil)
+    func userDidSignedIn(user: User, isFacebookUser: Bool) {
+        UserManager.fetch(user: user) {
+            DispatchQueue.main.async {
+                if isFacebookUser || user.isEmailVerified {
+                    self.performSegue(withIdentifier: Constants.SegueID.userListSegueID, sender: nil)
+                } else {
+                    self.performSegue(withIdentifier: Constants.SegueID.showVerifySegueID, sender: nil)
+                }
+            }
+        }
+    }
+    
+    func userDidSignedUp(user: User, isFacebookUser: Bool) {
+        UserManager.create(user: user, isFacebookUser: isFacebookUser)
+        DispatchQueue.main.async {
+            if isFacebookUser || user.isEmailVerified {
+                self.performSegue(withIdentifier: Constants.SegueID.userListSegueID, sender: nil)
+            } else {
+                self.performSegue(withIdentifier: Constants.SegueID.showVerifySegueID, sender: nil)
+            }
         }
     }
     
@@ -58,7 +73,6 @@ extension LoginViewController {
                     completion(.failure(with: FirbaseLoginError.emailLoginError))
                     return
                 }
-                UserManager.create(user: user, new: true)
                 completion(.success(user: user))
             })
         }
@@ -79,7 +93,6 @@ extension LoginViewController {
                 completion(.failure(with: FirbaseLoginError.emailLoginError))
                 return
             }
-            UserManager.create(user: user, new: false)
             completion(.success(user: user))
         }
     }
@@ -121,8 +134,13 @@ extension LoginViewController: FBSDKLoginButtonDelegate {
                         return
                     }
                     //signed in
-                    UserManager.create(user: user, new: true)
-                    self.userDidSignedIn(user: user)
+                    FirebaseDatabaseManager.shared.user(withID: user.uid, result: { ref in
+                        if ref == nil {
+                            self.userDidSignedUp(user: user, isFacebookUser: true)
+                        } else {
+                            self.userDidSignedIn(user: user, isFacebookUser: true)
+                        }
+                    })
                 }
             }
         }

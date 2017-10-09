@@ -26,6 +26,7 @@ struct DatabaseReferencePath {
     private init(){}
     static let interests = "interests"
     static let users = "users"
+    static let provider = "provider"
 }
 
 class FirebaseDatabaseManager {
@@ -49,9 +50,22 @@ class FirebaseDatabaseManager {
         let userRef = usersRef.child(user.id)
         userRef.observeSingleEvent(of: .value) { snapshot in
             if !snapshot.exists() {
+                //set new user data in firebase uid
                 usersRef.child(user.id).setValue(user.dictRepresentation)
             }
         }
     }
     
+    func user(withID userUID: String, result: @escaping ((DatabaseReference?) ->())) {
+        usersReference.observe(.value) { snap in
+            if snap.hasChild(userUID) {
+                let ref = self.usersReference.child(userUID)
+                result(ref)
+            }
+            else {
+                result(nil)
+            }
+        }
+    }
+        
 }

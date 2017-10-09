@@ -14,12 +14,22 @@ class UserManager {
     private init(){}
     static private(set) var currentUserData: UserData!
     
-    static func create(user firebaseUser: Firebase.User, new: Bool) {
+    static func create(user firebaseUser: Firebase.User, isFacebookUser: Bool) {
+        //create current user info
         currentUserData = UserData(fireBaseUser: firebaseUser)
-        //currentUserData.getInterests()
-        if new {
-            FirebaseDatabaseManager.shared.usersListAdd(user: currentUserData)
+        currentUserData.provider = isFacebookUser ? "facebook" : "email"
+        //store new user in database
+        FirebaseDatabaseManager.shared.usersListAdd(user: currentUserData)
+    }
+    
+    static func fetch(user firebaseUser: Firebase.User, completion: @escaping () -> ()){
+        //create current user info
+        currentUserData = UserData(fireBaseUser: firebaseUser)
+        currentUserData.getProvider {
+            completion()
         }
+        currentUserData.getInterests()
+        currentUserData.getSignatureURL()
     }
     
     static func updateUser(name: String) {

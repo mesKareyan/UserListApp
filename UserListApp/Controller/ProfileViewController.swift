@@ -57,7 +57,6 @@ class ProfileViewController: UITableViewController {
     private var isImageChanged = false
     private var isSignatureChanged = false
     private var isAgePickerVisible = false
-
     //nav bar state
     var navBarImage: UIImage!
     var navBarShadowImge: UIImage!
@@ -170,6 +169,7 @@ class ProfileViewController: UITableViewController {
         saveUserData()
         navigationController?.popViewController(animated: true)
     }
+    
     @IBAction func agePickerDoneButtonTapped(_ sender: UIButton) {
         toggleShowPicker()
     }
@@ -274,7 +274,6 @@ extension ProfileViewController: UITextFieldDelegate {
     
 }
 
-
 // MARK: - UIImagePickerControllerDelegate
 extension ProfileViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     
@@ -297,9 +296,9 @@ extension ProfileViewController: UIImagePickerControllerDelegate, UINavigationCo
     
     // MARK: - UIImagePickerControllerDelegate Methods
     
-    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
+    func imagePickerController(_ picker: UIImagePickerController,
+                               didFinishPickingMediaWithInfo info: [String : Any]) {
         if let pickedImage = info[UIImagePickerControllerOriginalImage] as? UIImage {
-//            APESuperHUD.showOrUpdateHUD(loadingIndicator: .standard, message: "Uploading image", presentingView: self.view)
             self.userImageView.image = pickedImage
             self.isImageChanged = true
         }
